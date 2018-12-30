@@ -1,0 +1,9 @@
+.idea
+node_modules/
+api/node_modules/
+app/node_modules/
+yarn-lock
+api/yarn.lock
+app/yarn.lock
+api/yarn-error.log
+app/yarn-error.log
