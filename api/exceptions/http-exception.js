@@ -1,7 +1,11 @@
-module.exports = class HttpException {
+class HttpException {
 
     constructor(code, message) {
         this.code = code;
         this.message = message;
     }
 }
+
+module.exports = HttpException;
+
+

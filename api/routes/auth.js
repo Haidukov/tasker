@@ -3,7 +3,7 @@ const authController = require('../controllers/auth');
 
 const authRouter = new Router();
 
-authRouter.post('/sign-up', async (req, res, next) => {
+authRouter.post('public/sign-up', async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
@@ -15,7 +15,7 @@ authRouter.post('/sign-up', async (req, res, next) => {
     }
 });
 
-authRouter.post('/login', async (req, res, next) => {
+authRouter.post('public/login', async (req, res, next) => {
     const { username, password } = req.body;
     try {
         const token = await authController.login(username, password);
