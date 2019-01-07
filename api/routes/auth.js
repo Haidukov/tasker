@@ -3,19 +3,19 @@ const authController = require('../controllers/auth');
 
 const authRouter = new Router();
 
-authRouter.post('public/sign-up', async (req, res, next) => {
+authRouter.post('/public/sign-up', async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
         await authController.createUser(username, password)
         res.sendStatus(201);
     } catch (e) {
-        res.sendStatus(e.message);
+        res.sendStatus(e.code);
         res.send(e.message);
     }
 });
 
-authRouter.post('public/login', async (req, res, next) => {
+authRouter.post('/public/login', async (req, res, next) => {
     const { username, password } = req.body;
     try {
         const token = await authController.login(username, password);

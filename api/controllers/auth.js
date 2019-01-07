@@ -23,7 +23,7 @@ async function login(username, password) {
 
     const user = await User.findOne({ username: username.toLowerCase() }).exec();
     if (!user) {
-        throw new HttpException(400, 'User not found');
+        throw new HttpException(403, 'User not found');
     }
 
     const match = await user.comparePassword(password);
