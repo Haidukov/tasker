@@ -1,30 +1,25 @@
 const { Router } = require('express');
 const authController = require('../controllers/auth');
+const { check } = require('express-validator/check');
 
 const authRouter = new Router();
 
-authRouter.post('public/sign-up', async (req, res, next) => {
-    const { username, password } = req.body;
+authRouter.post('/public/sign-up',
+    [
+        check('username').isEmail(),
+        check('password').isLength({ min: 8 })
+    ],
+    authController.createUser);
 
-    try {
-        await authController.createUser(username, password)
-        res.sendStatus(201);
-    } catch (e) {
-        res.sendStatus(e.message);
-        res.send(e.message);
-    }
-});
+authRouter.post('/public/login',
+    [
+        check('username').isEmail(),
+        check('password').isLength({ min: 8 })
+    ],
+    authController.login);
 
-authRouter.post('public/login', async (req, res, next) => {
-    const { username, password } = req.body;
-    try {
-        const token = await authController.login(username, password);
-        res.sendStatus(200);
-        res.send(token);
-    } catch (e) {
-        res.sendStatus(e.code);
-        res.send(e.message);
-    }
-})
+authRouter.get('/logout',
+    authController.logout
+)
 
 module.exports = authRouter;

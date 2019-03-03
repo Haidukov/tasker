@@ -1,40 +1,62 @@
 const User = require('../models/User');
 const HttpException = require('../exceptions/http-exception');
-const createToken = require('../util/token').createToken;
+const { createToken } = require('../util/token');
+const { validationResult } = require('express-validator/check');
+const generateError = require('../exceptions/errors-msg');
 
-async function createUser(username, password) {
-    if (!username || !password) {
-        throw new HttpException(400, 'Should input username and password');
+async function createUser(req, res, next) {
+    const errors  = validationResult(req);
+    if (!errors.isEmpty()) {
+        next(generateError(errors));
     }
 
-    const user = await User.findOne({username: username.toLowerCase()}).exec()
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username: username.toLowerCase() }).exec();
     if (user) {
-        throw new HttpException(400, 'User already exists');
+        next(new HttpException(400, 'User already exists'));
     }
 
-    const newUser = new User({username, password});
+    const newUser = new User({ username, password });
     newUser.save();
+    res.sendStatus(202);
 }
 
-async function login(username, password) {
-    if (!username || !password) {
-        throw new HttpException(400, 'Should input username and password');
+async function login(req, res, next) {
+    const { username, password } = req.body;
+
+    const errors  = validationResult(req);
+    if (!errors.isEmpty()) {
+        next(generateError(errors));
     }
 
     const user = await User.findOne({ username: username.toLowerCase() }).exec();
     if (!user) {
-        throw new HttpException(400, 'User not found');
+        next(new HttpException(400, 'User not found'));
     }
 
     const match = await user.comparePassword(password);
     if (!match) {
-        throw new HttpException(401, 'Incorrect password');
+        next(new HttpException(401, 'Invalid username or password'));
     }
 
-    return createToken(user);
+    const token = createToken(user);
+    res.status(200);
+    res.json(token);
+}
+
+
+async function logout(req, res, next) {
+
+}
+
+async function refresh(req, res, next) {
+
 }
 
 module.exports = {
     createUser,
-    login
+    login,
+    logout,
+    refresh
 }
