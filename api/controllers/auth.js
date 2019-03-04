@@ -18,8 +18,8 @@ async function createUser(req, res, next) {
     }
 
     const newUser = new User({ username, password });
-    newUser.save();
-    res.sendStatus(202);
+    await newUser.save();
+    res.sendStatus(201);
 }
 
 async function login(req, res, next) {
