@@ -8,6 +8,7 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import { Http } from '../utils/http';
 
 
 const styles = theme => ({
@@ -34,20 +35,26 @@ class SignUp extends React.Component {
         form: {
             username: '',
             password: '',
-            repeatPassword: ''
-        }
+        },
+        repeatPassword: ''
     };
 
-    form = React.createRef();
-
-    onSubmit = event => {
-        console.log('submit');
+    onSubmit = () => {
+        Http.post('/public/sign-up', this.state.form)
+            .then(() => Http.post('/public/login', this.state.form))
+            .then(response => console.log(response));
     };
 
     handleChange = (event) => {
-        const { form } = this.state;
-        form[event.target.name] = event.target.value;
-        this.setState({ form });
+        if (event.target.name === 'repeatPassword') {
+            const repeatPassword = event.target.value;
+            this.setState({ repeatPassword });
+        }
+        else {
+            const { form } = this.state;
+            form[event.target.name] = event.target.value;
+            this.setState({ form });
+        }
     }
 
     componentDidMount() {
@@ -66,7 +73,7 @@ class SignUp extends React.Component {
                 <Typography
                     className={classes.title}
                     variant='display1'>Sign Up</Typography>
-                <ValidatorForm onSubmit={() => console.log('hello')}>
+                <ValidatorForm onSubmit={this.onSubmit}>
                     <TextValidator
                         validators={['required', 'isEmail']}
                         errorMessages={['This field is required', 'Email is not valid']}
@@ -99,11 +106,12 @@ class SignUp extends React.Component {
                         type='password'
                         placeholder='Repeat Password'
                         name='repeatPassword'
-                        value={this.state.form.repeatPassword}
+                        value={this.state.repeatPassword}
                         onChange={this.handleChange}
                         className={classes.input}
                     />
                     <Button
+                        type='submit'
                         color='primary'
                         variant='contained'
                         className={classes.button}
