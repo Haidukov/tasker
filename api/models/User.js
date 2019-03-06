@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     lastVisit: Date,
+    role: {
+        type: String,
+        enum: ['Teacher', 'Student'],
+        default: 'Teacher'
+    },
     refreshToken: String
 }, { timestamps: true });
 

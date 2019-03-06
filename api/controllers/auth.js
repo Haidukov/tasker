@@ -17,7 +17,7 @@ async function createUser(req, res, next) {
         next(new HttpException(400, 'User already exists'));
     }
 
-    const newUser = new User({ username, password });
+    const newUser = new User({ username, password, role: 'Teacher' });
     await newUser.save();
     res.sendStatus(201);
 }
@@ -45,6 +45,10 @@ async function login(req, res, next) {
     res.json(token);
 }
 
+async function userData(req, res, next) {
+    console.log('hello');
+    res.json({message: 'hello'});
+}
 
 async function logout(req, res, next) {
 
@@ -58,5 +62,6 @@ module.exports = {
     createUser,
     login,
     logout,
-    refresh
+    refresh,
+    userData
 }
