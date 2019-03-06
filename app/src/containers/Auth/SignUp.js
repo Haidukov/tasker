@@ -59,7 +59,10 @@ class SignUp extends React.Component {
                 <Card className={classes.card}>
                     <Typography
                         className={classes.title}
-                        variant='display1'>Sign Up</Typography>
+                        variant='display1'
+                    >
+                        Sign Up
+                    </Typography>
                     <ValidatorForm onSubmit={this.onSubmit}>
                         <TextValidator
                             validators={['required', 'isEmail']}

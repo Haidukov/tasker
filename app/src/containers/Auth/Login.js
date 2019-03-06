@@ -43,7 +43,10 @@ class SignUp extends React.Component {
                 <Card className={classes.card}>
                     <Typography
                         className={classes.title}
-                        variant='display1'>Sign Up</Typography>
+                        variant='display1'
+                    >
+                        Login
+                    </Typography>
                     <ValidatorForm onSubmit={this.onSubmit}>
                         <TextValidator
                             validators={['required', 'isEmail']}
@@ -69,6 +72,7 @@ class SignUp extends React.Component {
                             onChange={this.handleChange}
                             className={classes.input}
                         />
+                        <div className='error'>{ this.state.error }</div>
                         <Button
                             type='submit'
                             color='primary'
