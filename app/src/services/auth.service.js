@@ -19,3 +19,7 @@ export function fetchUserData() {
             return data;
         })
 }
+
+export function refreshToken(token) {
+    return Http.post('/refresh-token', { token });
+}
