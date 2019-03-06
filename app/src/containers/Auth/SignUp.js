@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import styles from './styles';
 import { signUp } from '../../services/auth.service';
+import withUser from '../../hocs/withUser';
 
 class SignUp extends React.Component {
     state = {
@@ -23,6 +24,7 @@ class SignUp extends React.Component {
 
     onSubmit = () => {
         signUp(this.state.form)
+            .then(this.props.user.setUser)
             .catch(({ response }) => this.setState({error: response.data.message}))
     };
 
@@ -130,7 +132,7 @@ class SignUp extends React.Component {
 }
 
 
-export default withStyles(styles)(SignUp);
+export default withUser(withStyles(styles)(SignUp));
 
 
 

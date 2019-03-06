@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Router from './router';
 import UserContext from './contexts/UserContext';
 import './App.scss';
+import { getUserFromLocalStorage } from './services/local-storage.service';
 
 class App extends Component {
     state = {
@@ -12,10 +13,17 @@ class App extends Component {
         this.setState({ user });
     };
 
+    componentDidMount() {
+        const user = getUserFromLocalStorage();
+        if (user) {
+            this.setUser(user);
+        }
+    }
+
     render() {
         const userContextValue = {
             user: this.state.user,
-            setUser: this.state.setUser
+            setUser: this.setUser
         };
         return (
             <UserContext.Provider value={userContextValue}>
