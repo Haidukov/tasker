@@ -11,10 +11,11 @@ const styles = theme => ({
         textAlign: 'center'
     },
     button: {
-        margin: `${theme.spacing.unit * 5}px 0 ${theme.spacing.unit * 2}px`,
+        margin: `0 0 ${theme.spacing.unit * 2}px`,
     },
     input: {
-        marginTop: theme.spacing.unit * 5
+        marginTop: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2
     }
 });
 
