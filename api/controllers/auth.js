@@ -3,6 +3,7 @@ const HttpException = require('../exceptions/http-exception');
 const { createToken } = require('../util/token');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
+const uuid = require('uuid');
 
 async function createUser(req, res, next) {
     const errors  = validationResult(req);
@@ -62,7 +63,18 @@ async function logout(req, res, next) {
 }
 
 async function refresh(req, res, next) {
-
+    const refreshToken = req.body.refreshToken;
+    const user = await User.findOne({ refreshToken });
+    if (user) {
+        user.refreshToken = uuid();
+        await User.findOneAndUpdate({_id: user._id}, user).exec();
+        const token = createToken(user);
+        res.status(202);
+        res.json(token);
+    }
+    else {
+        next(new HttpException(401));
+    }
 }
 
 module.exports = {

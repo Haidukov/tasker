@@ -10,18 +10,20 @@ authRouter.post('/public/sign-up',
         check('username').isEmail(),
         check('password').isLength({ min: 8 })
     ],
-    authController.createUser);
+    authController.createUser
+);
 
 authRouter.post('/public/login',
     [
         check('username').isEmail(),
         check('password').isLength({ min: 8 })
     ],
-    authController.login);
-
-authRouter.get('/logout',
-    authController.logout
+    authController.login
 );
+
+authRouter.get('/logout', authController.logout);
+
+authRouter.post('/refresh-token', authController.refresh);
 
 authRouter.get('/user-data',
     jwtMiddleware,
