@@ -46,8 +46,15 @@ async function login(req, res, next) {
 }
 
 async function userData(req, res, next) {
-    console.log('hello');
-    res.json({message: 'hello'});
+    const userId = req.decoded.userId;
+    const user = await User.findById(userId);
+    const userDto = {
+      role: user.role,
+      username: user.username,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+    res.json(userDto);
 }
 
 async function logout(req, res, next) {
