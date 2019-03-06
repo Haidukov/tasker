@@ -32,7 +32,7 @@ async function login(req, res, next) {
 
     const user = await User.findOne({ username: username.toLowerCase() }).exec();
     if (!user) {
-        next(new HttpException(401, 'Invalid username or password''));
+        next(new HttpException(401, 'Invalid username or password'));
     }
 
     const match = await user.comparePassword(password);
