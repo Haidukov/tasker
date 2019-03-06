@@ -8,8 +8,8 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { Http } from '../../utils/http';
 import styles from './styles';
+import { login } from '../../services/auth.service';
 
 class SignUp extends React.Component {
     state = {
@@ -21,8 +21,7 @@ class SignUp extends React.Component {
     };
 
     onSubmit = () => {
-        Http.post('/public/login', this.state.form)
-            .then(response => console.log(response))
+        login(this.state.form)
             .catch(({ response }) => this.setState({error: response.data.message}));
     };
 
