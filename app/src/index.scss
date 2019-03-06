@@ -6,3 +6,10 @@ body {
   padding: 0;
   font-family: 'Roboto';
 }
+
+.error {
+  position: absolute;
+  margin-top: 7px;
+  color: red;
+  font-size: 12px;
+}
