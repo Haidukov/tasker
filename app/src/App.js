@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
 import Router from './router';
-import logo from './logo.svg';
+import UserContext from './contexts/UserContext';
 import './App.scss';
 
 class App extends Component {
-  render() {
-    return (
-        <Router/>
-    );
-  }
+    state = {
+        user: null,
+    };
+
+    setUser = user => {
+        this.setState({ user });
+    };
+
+    render() {
+        const userContextValue = {
+            user: this.state.user,
+            setUser: this.state.setUser
+        };
+        return (
+            <UserContext.Provider value={userContextValue}>
+                <Router/>
+            </UserContext.Provider>
+        );
+    }
 }
 
 export default App;
