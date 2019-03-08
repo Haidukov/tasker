@@ -11,14 +11,14 @@ async function createUser(req, res, next) {
         next(generateError(errors));
     }
 
-    const { username, password } = req.body;
+    const { username, password, firstName, lastName } = req.body;
 
     const user = await User.findOne({ username: username.toLowerCase() }).exec();
     if (user) {
         next(new HttpException(400, 'User already exists'));
     }
 
-    const newUser = new User({ username, password, role: 'Teacher' });
+    const newUser = new User({ username, password, firstName, lastName, role: 'Teacher' });
     await newUser.save();
     res.sendStatus(201);
 }
@@ -63,7 +63,7 @@ async function logout(req, res, next) {
 }
 
 async function refresh(req, res, next) {
-    const refreshToken = req.body.refreshToken;
+    const refreshToken = req.body.token;
     const user = await User.findOne({ refreshToken });
     if (user) {
         user.refreshToken = uuid();
