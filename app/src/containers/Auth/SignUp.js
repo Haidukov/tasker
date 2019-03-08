@@ -15,6 +15,8 @@ import withUser from '../../hocs/withUser';
 class SignUp extends React.Component {
     state = {
         form: {
+            firstName: '',
+            lastName: '',
             username: '',
             password: '',
         },
@@ -65,6 +67,37 @@ class SignUp extends React.Component {
                         Sign Up
                     </Typography>
                     <ValidatorForm onSubmit={this.onSubmit}>
+                        <Grid container spacing={24}
+                        >
+                            <Grid item xs={6}>
+                                <TextValidator
+                                    validators={['required']}
+                                    errorMessages={['This field is required']}
+                                    required
+                                    fullWidth
+                                    type='text'
+                                    placeholder='First Name'
+                                    onChange={this.handleChange}
+                                    name='firstName'
+                                    value={this.state.form.firstName}
+                                    className={classes.input}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextValidator
+                                    validators={['required']}
+                                    errorMessages={['This field is required']}
+                                    required
+                                    fullWidth
+                                    type='text'
+                                    placeholder='Last Name'
+                                    name='lastName'
+                                    value={this.state.form.lastName}
+                                    onChange={this.handleChange}
+                                    className={classes.input}
+                                />
+                            </Grid>
+                        </Grid>
                         <TextValidator
                             validators={['required', 'isEmail']}
                             errorMessages={['This field is required', 'Email is not valid']}

@@ -18,7 +18,7 @@ Http.interceptors.request.use(
                 };
             }
             else {
-                //throw new Error('jwt token don`t exists');
+                window.location.href='/login';
             }
         }
         return request;
@@ -40,7 +40,6 @@ Http.interceptors.response.use(
                     const newRequest = {
                         ...error.config,
                         retry: true,
-
                     };
                     newRequest.headers = {
                         ...newRequest.headers,
@@ -49,13 +48,11 @@ Http.interceptors.response.use(
                     return axios(newRequest);
 
                 } catch (e) {
-                    console.log('error');
-                    throw e;
+                   window.location.href='/login';
                 }
             }
             else {
-                console.log('error');
-                throw error;
+                window.location.href='/login';
             }
         }
     }
