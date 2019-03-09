@@ -6,8 +6,7 @@ import withUser from '../hocs/withUser';
 import Layout from '../containers/Main/Layout';
 
 const Router = props => {
-    const user = props.user.user;
-    console.log(props.user.user);
+    const { user: user } = props;
     return (
         <BrowserRouter>
             <Switch>
