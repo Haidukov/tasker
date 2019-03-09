@@ -26,6 +26,7 @@ const styles = theme => ({
     },
     card: {
         height: '100%',
+        padding: '10px',
         display: 'flex',
         flexDirection: 'column',
         '&:hover': {
@@ -37,7 +38,8 @@ const styles = theme => ({
         padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 3}px 0`,
     },
     cardMedia: {
-        paddingTop: '56.25%',
+        paddingTop: '100.25%',
+        height: '50px'
     },
     cardContent: {
         textAlign: 'center',
@@ -74,9 +76,10 @@ class WorkspacesList extends React.Component {
                 <div className={classNames(classes.layout, classes.cardGrid)}>
                     <Grid container spacing={40}>
                         <Grid item sm={6} md={4} lg={3}>
-                            <Card className={classNames(classes.card, classes.addCard)}>
+                            <Card
+                                className={classNames(classes.card, classes.addCard)}
+                                onClick={this.goToWorkspaceForm}>
                                 <CardMedia
-                                    onClick={this.goToWorkspaceForm}
                                     className={classes.cardMedia}
                                     image={MaterialPlusImage}
                                     title='Add workspace'
