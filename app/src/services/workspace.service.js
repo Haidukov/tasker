@@ -4,6 +4,10 @@ export function getWorkspaces() {
     return Http.get('/workspaces');
 }
 
+export function getWorkspace(id) {
+    return Http.get(`/workspaces/${id}`);
+}
+
 export function addWorkspace(form) {
     const headers = {
         'Content-Type': 'multipart/form-data'

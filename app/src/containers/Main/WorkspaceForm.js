@@ -6,10 +6,30 @@ import Typography from '@material-ui/core/es/Typography/Typography';
 import Button from '@material-ui/core/es/Button/Button';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Grid from '@material-ui/core/Grid';
-import styles from '../../styles/styles';
 import { addWorkspace } from '../../services/workspace.service';
 import withUser from '../../hocs/withUser'
 import ImageUpload from '../../components/ImageUpload';
+
+const styles = theme => ({
+    card: {
+        padding: theme.spacing.unit * 3,
+        margin: `${theme.spacing.unit * 5}px 15%`,
+        [theme.breakpoints.down('xs')]: {
+            margin: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px`,
+        },
+        maxWidth: 700
+    },
+    title: {
+        textAlign: 'center'
+    },
+    button: {
+        margin: `0 0 ${theme.spacing.unit * 2}px`,
+    },
+    input: {
+        marginTop: theme.spacing.unit * 2,
+        marginBottom: theme.spacing.unit * 2
+    }
+});
 
 class WorkspaceForm extends React.Component {
     state = {

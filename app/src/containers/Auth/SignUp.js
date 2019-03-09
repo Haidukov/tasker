@@ -8,7 +8,7 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import styles from '../../styles/styles';
+import styles from './styles';
 import { signUp } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
 

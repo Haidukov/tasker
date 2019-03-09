@@ -60,7 +60,11 @@ class WorkspacesList extends React.Component {
 
     goToWorkspaceForm = () => {
         this.props.history.push('/dashboard/add');
-    }
+    };
+
+    goToWorkspace = (id) => {
+        this.props.history.push(`/dashboard/${id}`);
+    };
 
     render() {
         const { classes, match } = this.props;
@@ -88,7 +92,8 @@ class WorkspacesList extends React.Component {
                             const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
                             return (
                                 <Grid item key={workspace._id} sm={6} md={4} lg={3}>
-                                    <Card className={classes.card}>
+                                    <Card className={classes.card}
+                                          onClick={() => this.goToWorkspace(workspace._id)}>
                                         <CardMedia
                                             className={classes.cardMedia}
                                             image={url}

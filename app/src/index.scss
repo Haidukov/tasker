@@ -8,6 +8,13 @@ body {
   min-height: 100vh;
 }
 
+$AppBarHeight: 64px;
+$FooterHeight: 115px;
+
+main {
+  min-height: calc(100vh - #{$AppBarHeight} - #{$FooterHeight});
+}
+
 .error {
   text-align: center;
   margin: 5px 0 10px;
