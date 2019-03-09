@@ -7,6 +7,7 @@ import Layout from '../containers/Main/Layout';
 
 const Router = props => {
     const user = props.user.user;
+    console.log(props.user.user);
     return (
         <BrowserRouter>
             <Switch>

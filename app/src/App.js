@@ -5,6 +5,15 @@ import './App.scss';
 import { getUserFromLocalStorage } from './services/local-storage.service';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        const user = getUserFromLocalStorage();
+        if (user) {
+            this.state.user = user;
+        }
+
+    }
+
     state = {
         user: null,
     };
@@ -12,13 +21,6 @@ class App extends Component {
     setUser = user => {
         this.setState({ user });
     };
-
-    componentDidMount() {
-        const user = getUserFromLocalStorage();
-        if (user) {
-            this.setUser(user);
-        }
-    }
 
     render() {
         const userContextValue = {
