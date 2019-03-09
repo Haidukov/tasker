@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import styles from './styles';
 import { login } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
+import { withRouter } from 'react-router-dom';
 
 class SignUp extends React.Component {
     state = {
@@ -24,6 +25,7 @@ class SignUp extends React.Component {
     onSubmit = () => {
         login(this.state.form)
             .then(this.props.user.setUser)
+            .then(() => this.props.history.push('/dashboard'))
             .catch(({ response }) => this.setState({error: response.data.message}));
     };
 
@@ -104,7 +106,7 @@ class SignUp extends React.Component {
 }
 
 
-export default withUser(withStyles(styles)(SignUp));
+export default withRouter(withUser(withStyles(styles)(SignUp)));
 
 
 
