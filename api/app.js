@@ -11,6 +11,7 @@ const app = express();
 
 const server = http.createServer(app);
 
+mongoose.set('useCreateIndex', true);
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.use(bodyParser.json());
