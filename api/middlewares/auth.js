@@ -5,7 +5,6 @@ const HttpException = require('../exceptions/http-exception');
 function auth(req, res, next) {
     if (req.headers.authorization) {
         const [prefix, token] = req.headers.authorization.split(' ');
-
         if (prefix === 'Bearer') {
             return jwt.verify(token, JWT_SECRET, (err, decoded) => {
                 if (err) {

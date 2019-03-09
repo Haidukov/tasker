@@ -23,4 +23,9 @@ workspaceRouter.get('/workspaces',
     workspaceController.getWorkspaces
 );
 
+workspaceRouter.get('/workspaces/:id',
+    jwtMiddleware,
+    workspaceController.getWorkspace
+);
+
 module.exports = workspaceRouter;
