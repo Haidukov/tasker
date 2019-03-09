@@ -42,7 +42,7 @@ async function getWorkspace(req, res, next) {
     const userId = req.decoded.userId;
     const workspaceId = req.params.id;
     try {
-        const workspace = await Workspace.find({ _id: workspaceId, authorId: userId }).exec();
+        const workspace = await Workspace.findOne({ _id: workspaceId, authorId: userId }).exec();
         if (workspace) {
             res.status(200);
             res.json(workspace);
