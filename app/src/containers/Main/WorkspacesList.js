@@ -85,7 +85,7 @@ class WorkspacesList extends React.Component {
                             </Card>
                         </Grid>
                         {workspaces.map( workspace => {
-                            const url = `http://localhost:8000/${workspace.imageUrl}`;
+                            const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
                             return (
                                 <Grid item key={workspace._id} sm={6} md={4} lg={3}>
                                     <Card className={classes.card}>

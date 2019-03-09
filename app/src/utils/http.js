@@ -3,7 +3,7 @@ import { getTokenFromLocalStorage, setTokenToLocalStorage } from '../services/lo
 import { refreshToken as refreshAuthToken } from '../services/auth.service';
 
 export const Http = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
     contentType: 'application/json'
 });
 
