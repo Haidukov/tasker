@@ -3,7 +3,7 @@ const { JWT_SECRET } = require('../config');
 
 function createToken(user) {
     return {
-        accessToken: jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: 10 }),
+        accessToken: jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: 3600 }),
         refreshToken: user.refreshToken
     };
 }

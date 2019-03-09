@@ -7,16 +7,18 @@ const authRouter = new Router();
 
 authRouter.post('/public/sign-up',
     [
-        check('username').isEmail(),
-        check('password').isLength({ min: 8 })
+        check('firstName').exists(),
+        check('lastName').exists(),
+        check('username').exists().isEmail(),
+        check('password').exists().isLength({ min: 8 })
     ],
     authController.createUser
 );
 
 authRouter.post('/public/login',
     [
-        check('username').isEmail(),
-        check('password').isLength({ min: 8 })
+        check('username').exists().isEmail(),
+        check('password').exists().isLength({ min: 8 })
     ],
     authController.login
 );

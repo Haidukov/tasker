@@ -3,7 +3,7 @@ const http = require('http');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const routes = require('./routes/auth');
+const routes = require('./routes');
 const { PORT, MONGODB_URI } = require('./config');
 const errorHandler = require('./exceptions/error-handler');
 
@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
+app.use('/', express.static(__dirname + '/public'));
 app.use('/api', routes);
 
 app.use(errorHandler);
