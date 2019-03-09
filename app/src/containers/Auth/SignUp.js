@@ -8,7 +8,7 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import styles from './styles';
+import styles from '../../styles/styles';
 import { signUp } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
 
@@ -43,12 +43,7 @@ class SignUp extends React.Component {
     }
 
     componentDidMount() {
-        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-            if (value !== this.state.form.password) {
-                return false;
-            }
-            return true;
-        });
+        ValidatorForm.addValidationRule('isPasswordMatch', value => value !== this.state.form.password);
     }
 
     render() {

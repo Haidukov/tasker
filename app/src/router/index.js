@@ -17,7 +17,7 @@ const Router = props => {
                         <Redirect to='/dashboard'/> :
                         <Redirect to='/login'/>
                 )}/>
-                <Route exact path='/dashboard' component={Layout}/>
+                <Route path='/dashboard' component={Layout}/>
             </Switch>
         </BrowserRouter>
     );
