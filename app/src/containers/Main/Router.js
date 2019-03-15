@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import WorkspacesList from './WorkspacesList';
 import WorkspaceForm from './WorkspaceForm';
-import Workspace from './Workspace';
+import Workspace from './WorkspacePage';
 
-const router = ({ match }) => {
+const workspaceRouter = ({ match }) => {
     return (
     <BrowserRouter>
         <Switch>
@@ -28,5 +28,5 @@ const router = ({ match }) => {
     </BrowserRouter>
 )};
 
-export default router;
+export default workspaceRouter;
 

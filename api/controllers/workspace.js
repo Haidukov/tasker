@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const uuid = require('uuid');
 const Workspace = require('../models/Workspace');
+const User = require('../models/User');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
 
@@ -44,8 +45,12 @@ async function getWorkspace(req, res, next) {
     try {
         const workspace = await Workspace.findOne({ _id: workspaceId, authorId: userId }).exec();
         if (workspace) {
+            const { authorId } = workspace;
+            const author = await User.findOne({ _id: authorId});
+            workspace._doc.author = author;
             res.status(200);
             res.json(workspace);
+
         }
         else {
             res.sendStatus(404);
