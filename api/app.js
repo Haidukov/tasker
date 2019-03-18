@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes');
+require('dotenv').config();
 const { PORT, MONGODB_URI } = require('./config');
 const errorHandler = require('./exceptions/error-handler');
 

@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const workspaceController = require('../controllers/workspace');
+const sprintController = require('../controllers/sprint');
 const jwtMiddleware = require('../middlewares/auth');
 const fileUpload = require('express-fileupload');
-const { check } = require('express-validator/check');
-const workspaceRouter = new Router();
 
-workspaceRouter.post('/workspaces',
+const sprintRouter = new Router();
+const { check } = require('express-validator/check');
+
+sprintRouter.post('/workspaces/:workspaceId/sprints/',
     jwtMiddleware,
     fileUpload({
         limits: { fileSize: 50 * 1024 * 1024}
@@ -14,17 +15,17 @@ workspaceRouter.post('/workspaces',
         check('name').exists(),
         check('description').exists(),
     ],
-    workspaceController.createWorkspace
+    sprintController.createSprint
 );
 
-workspaceRouter.get('/workspaces',
+sprintRouter.get('/workspaces/:workspaceId/sprints',
     jwtMiddleware,
-    workspaceController.getWorkspaces
+    sprintController.getSprints
 );
 
-workspaceRouter.get('/workspaces/:id',
+sprintRouter.get('/workspaces/:workspaceId/sprints/:sprintId',
     jwtMiddleware,
-    workspaceController.getWorkspace
+    sprintController.getSprint
 );
 
-module.exports = workspaceRouter;
+module.exports = sprintRouter;

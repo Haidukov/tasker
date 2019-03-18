@@ -21,3 +21,10 @@ main {
   color: red;
   font-size: 12px;
 }
+
+a {
+  text-decoration: none;
+  &:visited {
+    text-decoration: none !important;
+  }
+}

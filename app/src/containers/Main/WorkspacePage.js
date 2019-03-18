@@ -1,124 +1,89 @@
 import React from 'react';
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
-import { getWorkspaces } from '../../services/workspace.service';
-import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
+import { getWorkspace } from '../../services/workspace.service';
+import { withRouter, Link } from 'react-router-dom';
 
 const styles = theme => ({
-    layout: {
-        width: 'auto',
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
-            width: 1100,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    cardGrid: {
-        padding: `${theme.spacing.unit * 8}px 0`,
-    },
     card: {
-        height: '100%',
-        padding: '10px',
-        display: 'flex',
-        flexDirection: 'column',
-        '&:hover': {
-            cursor: 'pointer',
-            boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'
-        }
+        margin: `${theme.spacing.unit * 5}px auto`,
+        maxWidth: 345,
     },
-    addCard: {
-        padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 3}px 0`,
+    media: {
+        // ⚠️ object-fit is not supported by IE 11.
+        objectFit: 'cover',
     },
-    cardMedia: {
-        paddingTop: '100.25%',
-        height: '50px'
-    },
-    cardContent: {
-        textAlign: 'center',
-        flexGrow: 1,
-    }
 });
 
-class WorkspacesList extends React.Component {
+class ImgMediaCard extends React.Component {
     state = {
-        workspaces: []
+        workspace: null
     };
 
     componentDidMount() {
-        getWorkspaces().then(({ data }) => {
-            this.setState({
-                workspaces: data
-            });
-        });
+        getWorkspace(this.props.match.params.id)
+            .then(({ data }) => {
+                this.setState({
+                    workspace: data
+                });
+            })
     }
 
-    goToWorkspaceForm = () => {
-        this.props.history.push('/dashboard/add');
-    };
-
-    goToWorkspace = (id) => {
+    goToSprintsList = (id) => {
         this.props.history.push(`/dashboard/${id}`);
     };
 
     render() {
         const { classes, match } = this.props;
-        const { workspaces } = this.state;
+        const { workspace } = this.state;
         return (
-            <main>
-                <div className={classNames(classes.layout, classes.cardGrid)}>
-                    <Grid container spacing={40}>
-                        <Grid item sm={6} md={4} lg={3}>
-                            <Card
-                                className={classNames(classes.card, classes.addCard)}
-                                onClick={this.goToWorkspaceForm}>
-                                <CardMedia
-                                    className={classes.cardMedia}
-                                    image={MaterialPlusImage}
-                                    title='Add sprint'
-                                />
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Create new sprint
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                        {workspaces.map( workspace => {
-                            const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
-                            return (
-                                <Grid item key={workspace._id} sm={6} md={4} lg={3}>
-                                    <Card className={classes.card}
-                                          onClick={() => this.goToWorkspace(workspace._id)}>
-                                        <CardMedia
-                                            className={classes.cardMedia}
-                                            image={url}
-                                            title="Image title"
-                                        />
-                                        <CardContent className={classes.cardContent}>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                { workspace.name }
-                                            </Typography>
-                                            <Typography>
-                                                { workspace.description }
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
-                </div>
-            </main>
-        )
+            <> {workspace && (
+                <Card className={classes.card}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt="Contemplative Reptile"
+                            className={classes.media}
+                            image={`${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`}
+                            title="Contemplative Reptile"
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {workspace.name}
+                            </Typography>
+                            <Typography component="p">
+                                {workspace.description}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button size="small" color="primary">
+                            <Link to={`${match.url}/students`}>
+                            Students
+                            </Link>
+                        </Button>
+                        <Button size="small" color="primary">
+                            <Link to={`${match.url}/sprints`}>
+                                Sprints
+                            </Link>
+                        </Button>
+                    </CardActions>
+                </Card>
+            )}
+            </>
+        );
     }
 }
 
-export default withRouter(withStyles(styles)(WorkspacesList));
+ImgMediaCard.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withRouter(withStyles(styles)(ImgMediaCard));

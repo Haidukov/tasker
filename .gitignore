@@ -8,3 +8,5 @@ app/yarn.lock
 api/yarn-error.log
 app/yarn-error.log
 yarn-error.log
+api/.env
+app/.env
