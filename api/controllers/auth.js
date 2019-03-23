@@ -4,6 +4,7 @@ const { createToken } = require('../util/token');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
 const uuid = require('uuid');
+const UserRoles = require('../contstants/user-roles');
 
 async function createUser(req, res, next) {
     const errors  = validationResult(req);
@@ -18,7 +19,7 @@ async function createUser(req, res, next) {
         next(new HttpException(400, 'User already exists'));
     }
 
-    const newUser = new User({ username, password, firstName, lastName, role: 'Teacher' });
+    const newUser = new User({ username, password, firstName, lastName, role: UserRoles.TEACHER });
     await newUser.save();
     res.sendStatus(201);
 }
