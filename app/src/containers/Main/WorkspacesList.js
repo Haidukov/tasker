@@ -7,8 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import { getWorkspaces } from '../../services/workspace.service';
+import { getWorkspaces, getWorkspacesByStudent } from '../../services/workspace.service';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
+import withUser from '../../hocs/withUser';
+import * as Roles from '../../constants/user-role';
 
 const styles = theme => ({
     layout: {
@@ -53,10 +55,12 @@ class WorkspacesList extends React.Component {
     };
 
     componentDidMount() {
-        getWorkspaces().then(({ data }) => {
+        const { user: { role, id } } = this.props.user;
+        const request = role === Roles.TEACHER ? () => getWorkspaces() : () => getWorkspacesByStudent(id);
+        request().then(({ data }) => {
             this.setState({
                 workspaces: data
-            });
+            })
         });
     }
 
@@ -121,4 +125,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withRouter(withStyles(styles)(WorkspacesList));
+export default withUser(withRouter(withStyles(styles)(WorkspacesList)));

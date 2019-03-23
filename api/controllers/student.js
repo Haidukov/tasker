@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
 const HttpException = require('../exceptions/http-exception');
 const MailTransport = require('../util/mail');
-const UserRoles = require('../contstants/user-roles');
+const UserRoles = require('../constants/user-roles');
 const { createToken } = require('../util/token');
 
 

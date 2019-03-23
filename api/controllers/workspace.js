@@ -60,8 +60,19 @@ async function getWorkspace(req, res, next) {
     }
 }
 
+async function getWorkspacesByStudent(req, res, next) {
+    const studentId = req.params.id;
+    const workspaces = await Workspace.find(
+        {
+            'students': studentId
+        }
+    ).exec();
+    res.json(workspaces);
+}
+
 module.exports = {
     createWorkspace,
     getWorkspaces,
-    getWorkspace
+    getWorkspace,
+    getWorkspacesByStudent
 }

@@ -18,3 +18,7 @@ export function addWorkspace(form) {
     }
     return Http.post('/workspaces', formData, { headers });
 }
+
+export function getWorkspacesByStudent(id) {
+    return Http.get(`/student/${id}/workspaces`);
+}

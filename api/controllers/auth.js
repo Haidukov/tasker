@@ -4,7 +4,7 @@ const { createToken } = require('../util/token');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
 const uuid = require('uuid');
-const UserRoles = require('../contstants/user-roles');
+const UserRoles = require('../constants/user-roles');
 
 async function createUser(req, res, next) {
     const errors  = validationResult(req);
@@ -51,6 +51,7 @@ async function userData(req, res, next) {
     const userId = req.decoded.userId;
     const user = await User.findById(userId);
     const userDto = {
+      id: user._id,
       role: user.role,
       username: user.username,
       createdAt: user.createdAt,
