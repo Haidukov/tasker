@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/es/Paper/Paper';
 import Grid from '@material-ui/core/Grid';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
-import { createStudentInvite } from '../../services/students';
+import { createStudentInvite } from '../../services/students.service';
 
 const styles = theme => ({
     paper: {
