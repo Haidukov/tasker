@@ -12,10 +12,12 @@ import styles from './styles';
 import { signUp } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
 import { withRouter } from 'react-router-dom';
+import AvatarUpload from '../../components/AvatarUpload';
 
 class SignUp extends React.Component {
     state = {
         form: {
+            image: null,
             firstName: '',
             lastName: '',
             username: '',
@@ -64,6 +66,10 @@ class SignUp extends React.Component {
                         Sign Up
                     </Typography>
                     <ValidatorForm onSubmit={this.onSubmit}>
+                        <Grid container justify='center'>
+                            <AvatarUpload name='image'
+                                          onChange={this.handleChange} />
+                        </Grid>
                         <Grid container spacing={24}
                         >
                             <Grid item xs={6}>

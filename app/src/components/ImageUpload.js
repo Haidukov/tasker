@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import withImgUpload from '../hocs/withImgUpload';
 
 const styles = theme => ({
     button: {
@@ -19,67 +20,34 @@ const styles = theme => ({
     }
 });
 
-class ImageUpload extends React.Component {
-    ref = React.createRef();
-
-    state = {
-        image: null
-    };
-
-    onClick = () => {
-        this.ref.current.click();
-    };
-
-    onChange = e => {
-        if (e.target.files && e.target.files.length) {
-            this.setState({
-                image: URL.createObjectURL(e.target.files[0])
-            });
-            const event = {
-                ...e
-            };
-            event.target = {
-                ...event.target,
-                value: e.target.files[0],
-                name: this.props.name
-            }
-            this.props.onChange(event);
-        }
-    };
-
-    render() {
-        const { classes, id, label, name } = this.props;
-        const { image } = this.state;
-        return (
-            <>
-                <Grid
-                    container
-                    direction='column'
-                    alignItems='center'>
-                    <Card className={classes.card}>
-                        <img className={classes.img}
-                             src={image}/>
-                    </Card>
-                    <label htmlFor={id}>
-                        <Button
-                            onClick={this.onClick}
-                            className={classes.button}
-                            variant='contained'>
-                            {label}
-                        </Button>
-                    </label>
-                    <input
-                        ref={this.ref}
-                        id={id}
-                        name={name}
-                        onChange={this.onChange}
-                        hidden accept='image/*'
-                        type='file'/>
-                </Grid>
-            </>
-        );
-    }
-}
+const ImageUpload = React.forwardRef((props, ref) => (
+    <>
+        <Grid
+            container
+            direction='column'
+            alignItems='center'>
+            <Card className={props.classes.card}>
+                <img className={props.classes.img}
+                     src={props.img}/>
+            </Card>
+            <label htmlFor={props.id}>
+                <Button
+                    onClick={props.openFileDialog}
+                    className={props.classes.button}
+                    variant='contained'>
+                    {props.label}
+                </Button>
+            </label>
+            <input
+                ref={ref}
+                id={props.id}
+                name={props.name}
+                onChange={props.onChange}
+                hidden accept='image/*'
+                type='file'/>
+        </Grid>
+    </>
+));
 
 ImageUpload.propTypes = {
     classes: PropTypes.object.isRequired,
@@ -89,4 +57,4 @@ ImageUpload.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(ImageUpload);
+export default withStyles(styles)(withImgUpload(ImageUpload));
