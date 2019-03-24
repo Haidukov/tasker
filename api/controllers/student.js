@@ -9,6 +9,14 @@ const UserRoles = require('../constants/user-roles');
 const { createToken } = require('../util/token');
 
 
+async function getStudentsByWorkspace(req, res, next) {
+    const { workspaceId } = req.params;
+    const workspace = await Workspace.findOne({ _id: workspaceId }).populate('students').exec();
+    const studentsList = workspace.students || [];
+    res.status(200);
+    res.json(studentsList);
+}
+
 async function createInvite(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -86,5 +94,6 @@ async function confirmInvite(req, res, next) {
 
 module.exports = {
     createInvite,
-    confirmInvite
+    confirmInvite,
+    getStudentsByWorkspace
 }

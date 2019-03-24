@@ -5,6 +5,11 @@ const { check } = require('express-validator/check');
 
 const studentsRouter = new Router();
 
+studentsRouter.get('/workspaces/:workspaceId/students',
+    jwtMiddleware,
+    studentsController.getStudentsByWorkspace
+);
+
 studentsRouter.post('/workspaces/:workspaceId/invites',
     jwtMiddleware,
     [

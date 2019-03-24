@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import { getWorkspaces } from '../../services/workspace.service';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import Modal from '@material-ui/core/es/Modal/Modal';
 import InviteStudentForm from './InviteStudentForm';
+import { getStudentsByWorkspace } from '../../services/students.service';
 
 const styles = theme => ({
     layout: {
@@ -51,14 +51,15 @@ const styles = theme => ({
 
 class WorkspacesList extends React.Component {
     state = {
-        workspaces: [],
+        students: [],
         isModalOpen: false
     };
 
     componentDidMount() {
-        getWorkspaces().then(({ data }) => {
+        const workspaceId = this.props.match.params.id;
+        getStudentsByWorkspace(workspaceId).then(({ data }) => {
             this.setState({
-                workspaces: data
+                students: data
             });
         });
     }
@@ -81,7 +82,7 @@ class WorkspacesList extends React.Component {
 
     render() {
         const { classes, match } = this.props;
-        const { workspaces } = this.state;
+        const { students } = this.state;
         return (
             <>
                 <main>
@@ -94,7 +95,7 @@ class WorkspacesList extends React.Component {
                                     <CardMedia
                                         className={classes.cardMedia}
                                         image={MaterialPlusImage}
-                                        title='Add workspace'
+                                        title='Invite a student'
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
@@ -103,23 +104,22 @@ class WorkspacesList extends React.Component {
                                     </CardContent>
                                 </Card>
                             </Grid>
-                            {workspaces.map(workspace => {
-                                const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
+                            {students.map(student => {
+                                const url = `${process.env.REACT_APP_BACKEND_URL}/${students.imageUrl}`;
                                 return (
-                                    <Grid item key={workspace._id} sm={6} md={4} lg={3}>
+                                    <Grid item key={student._id} sm={6} md={4} lg={3}>
                                         <Card className={classes.card}
-                                              onClick={() => this.goToWorkspace(workspace._id)}>
+                                              onClick={() => this.goToWorkspace(student._id)}>
                                             <CardMedia
                                                 className={classes.cardMedia}
-                                                image={url}
                                                 title="Image title"
                                             />
                                             <CardContent className={classes.cardContent}>
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    {workspace.name}
+                                                    {student.firstName}
                                                 </Typography>
                                                 <Typography>
-                                                    {workspace.description}
+                                                    {student.description}
                                                 </Typography>
                                             </CardContent>
                                         </Card>
