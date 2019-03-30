@@ -11,7 +11,14 @@ const { createToken } = require('../util/token');
 
 async function getStudentsByWorkspace(req, res, next) {
     const { workspaceId } = req.params;
-    const workspace = await Workspace.findOne({ _id: workspaceId }).populate('students').exec();
+    const workspace = await Workspace.findOne({ _id: workspaceId })
+        .populate(
+            {
+                path: 'students',
+                select: 'firstName lastName avatar username'
+            })
+        .select('students')
+        .exec();
     const studentsList = workspace.students || [];
     res.status(200);
     res.json(studentsList);
