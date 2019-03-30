@@ -13,6 +13,15 @@ $FooterHeight: 115px;
 
 main {
   min-height: calc(100vh - #{$AppBarHeight} - #{$FooterHeight});
+  height: 100%;
+  flex-grow: 1;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .error {

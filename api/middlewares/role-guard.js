@@ -2,7 +2,6 @@ const HttpException = require('../exceptions/http-exception');
 
 function roleGuard(allowedRole) {
     return (req, res, next) => {
-        console.log('hello');
         if (!req.decoded) {
             next(new HttpException(401));
         }

@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import withImgUpload from '../hocs/withImgUpload';
+import withFileUpload from '../hocs/withFileUpload';
 
 const styles = theme => ({
     button: {
@@ -27,14 +27,17 @@ const ImageUpload = React.forwardRef((props, ref) => (
             direction='column'
             alignItems='center'>
             <Card className={props.classes.card}>
-                <img className={props.classes.img}
-                     src={props.img}/>
+                <img
+                    className={props.classes.img}
+                    src={props.file}
+                />
             </Card>
             <label htmlFor={props.id}>
                 <Button
                     onClick={props.openFileDialog}
                     className={props.classes.button}
-                    variant='contained'>
+                    variant='contained'
+                >
                     {props.label}
                 </Button>
             </label>
@@ -57,4 +60,4 @@ ImageUpload.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(withImgUpload(ImageUpload));
+export default withStyles(styles)(withFileUpload(ImageUpload));

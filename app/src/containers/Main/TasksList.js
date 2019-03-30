@@ -7,9 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import { getWorkspace, getWorkspaces } from '../../services/workspace.service';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
-import { getSprints } from '../../services/sprint.service';
+import withUser from '../../hocs/withUser';
+import { getTasks } from '../../services/tasks.service';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import Button from '@material-ui/core/es/Button/Button';
 
 const styles = theme => ({
     layout: {
@@ -27,7 +29,7 @@ const styles = theme => ({
     },
     card: {
         height: '100%',
-        padding: '10px',
+        padding: '5px',
         display: 'flex',
         flexDirection: 'column',
         '&:hover': {
@@ -36,44 +38,50 @@ const styles = theme => ({
         }
     },
     addCard: {
-        padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 3}px 0`,
+        padding: `${theme.spacing.unit * 1}px ${theme.spacing.unit * 1}px 0`,
     },
     cardMedia: {
-        paddingTop: '100.25%',
-        height: '50px'
+        paddingTop: '-70%',
+        height: '130px',
+        backgroundSize: '170px'
     },
     cardContent: {
         textAlign: 'center',
         flexGrow: 1,
-    }
+    },
+    downloadButton: {
+        margin: theme.spacing.unit,
+    },
+    downloadIcon: {
+        marginLeft: theme.spacing.unit,
+    },
 });
 
-class SprintsList extends React.Component {
+class WorkspacesList extends React.Component {
     state = {
-        sprints: []
+        tasks: []
     };
 
     componentDidMount() {
-        const { id } = this.props.match.params;
-        getSprints(id).then(({ data }) => {
+        const { sprintId } = this.props.match.params;
+        getTasks(sprintId).then(({ data }) => {
             this.setState({
-                sprints: data
-            });
+                tasks: data
+            })
         });
     }
 
-    goToSprintForm = () => {
-        const { id } = this.props.match.params;
-        this.props.history.push(`/dashboard/${id}/add`);
+    goToTaskForm = () => {
+        this.props.history.push(`${this.props.match.url}/add`);
     };
 
-    goToSprint = (id) => {
-        this.props.history.push(`${this.props.match.url}/${id}`);
+    goToWorkspace = (id) => {
+        this.props.history.push(`/dashboard/${id}`);
     };
 
     render() {
         const { classes, match } = this.props;
-        const { sprints } = this.state;
+        const { tasks } = this.state;
         return (
             <main>
                 <div className={classNames(classes.layout, classes.cardGrid)}>
@@ -81,37 +89,33 @@ class SprintsList extends React.Component {
                         <Grid item sm={6} md={4} lg={3}>
                             <Card
                                 className={classNames(classes.card, classes.addCard)}
-                                onClick={this.goToSprintForm}>
+                                onClick={this.goToTaskForm}>
                                 <CardMedia
                                     className={classes.cardMedia}
                                     image={MaterialPlusImage}
-                                    title='Add sprint'
+                                    title='Create task'
                                 />
-                                <CardContent className={classes.cardContent}>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                        Create new sprint
-                                    </Typography>
-                                </CardContent>
                             </Card>
                         </Grid>
-                        {sprints.map( sprint => {
-                            const url = `${process.env.REACT_APP_BACKEND_URL}/${sprint.imageUrl}`;
+                        {tasks.map( task => {
+                            const url = `${process.env.REACT_APP_BACKEND_URL}/${task.fileUrl}`;
                             return (
-                                <Grid item key={sprint._id} sm={6} md={4} lg={3}>
+                                <Grid item key={task._id} sm={6} md={4} lg={3}>
                                     <Card className={classes.card}
-                                          onClick={() => this.goToSprint(sprint._id)}>
-                                        <CardMedia
-                                            className={classes.cardMedia}
-                                            image={url}
-                                            title="Image title"
-                                        />
+                                          onClick={() => this.goToWorkspace(task._id)}>
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                { sprint.name }
+                                                { task.name }
                                             </Typography>
-                                            <Typography>
-                                                { sprint.description }
-                                            </Typography>
+                                            <Button
+                                                variant='contained'
+                                                color='primary'
+                                                className={classes.downloadButton}
+
+                                            >
+                                                Download
+                                                <CloudDownloadIcon className={classes.downloadIcon}/>
+                                            </Button>
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -124,4 +128,4 @@ class SprintsList extends React.Component {
     }
 }
 
-export default withRouter(withStyles(styles)(SprintsList));
+export default withUser(withRouter(withStyles(styles)(WorkspacesList)));

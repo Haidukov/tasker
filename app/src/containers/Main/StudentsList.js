@@ -28,7 +28,7 @@ const styles = theme => ({
     },
     card: {
         height: '100%',
-        padding: '10px',
+        padding: '10px 0 0',
         display: 'flex',
         flexDirection: 'column',
         '&:hover': {
@@ -40,8 +40,8 @@ const styles = theme => ({
         padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 3}px 0`,
     },
     cardMedia: {
-        paddingTop: '100.25%',
-        height: '50px'
+        paddingTop: '100.0%',
+        height: '100%'
     },
     cardContent: {
         textAlign: 'center',
@@ -105,7 +105,8 @@ class WorkspacesList extends React.Component {
                                 </Card>
                             </Grid>
                             {students.map(student => {
-                                const url = `${process.env.REACT_APP_BACKEND_URL}/${students.imageUrl}`;
+                                const url = `${process.env.REACT_APP_BACKEND_URL}/${student.avatar}`;
+                                console.log(url);
                                 return (
                                     <Grid item key={student._id} sm={6} md={4} lg={3}>
                                         <Card className={classes.card}
@@ -113,13 +114,11 @@ class WorkspacesList extends React.Component {
                                             <CardMedia
                                                 className={classes.cardMedia}
                                                 title="Image title"
+                                                image={url}
                                             />
                                             <CardContent className={classes.cardContent}>
                                                 <Typography gutterBottom variant="h5" component="h2">
-                                                    {student.firstName}
-                                                </Typography>
-                                                <Typography>
-                                                    {student.description}
+                                                    {student.firstName} {student.lastName}
                                                 </Typography>
                                             </CardContent>
                                         </Card>

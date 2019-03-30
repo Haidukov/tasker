@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         enum: ['Teacher', 'Student'],
         default: 'Teacher'
     },
+    avatar: {
+        type: String,
+        default: 'images/user.svg'
+    },
     refreshToken: String
 }, { timestamps: true });
 

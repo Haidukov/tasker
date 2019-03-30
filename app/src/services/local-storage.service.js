@@ -1,3 +1,5 @@
+import { parseJSONSafe } from '../utils/util';
+
 export function setTokenToLocalStorage(token) {
     localStorage.setItem('token', JSON.stringify(token));
 }
@@ -11,5 +13,5 @@ export function setUserDataToLocalStorage(data) {
 }
 
 export function getUserFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('user-data'));
+    return parseJSONSafe(localStorage.getItem('user-data'));
 }

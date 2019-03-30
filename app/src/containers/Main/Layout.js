@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Router from './Router';
+import Footer from '../../components/Footer';
 
 const styles = theme => ({
     appBar: {
@@ -13,12 +14,7 @@ const styles = theme => ({
     },
     icon: {
         marginRight: theme.spacing.unit * 2,
-    },
-    footer: {
-        marginTop: 'auto',
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing.unit * 3,
-    },
+    }
 });
 
 const Layout = ({ classes, match }) => {
@@ -33,14 +29,7 @@ const Layout = ({ classes, match }) => {
                 </Toolbar>
             </AppBar>
             <Router match={match}/>
-            <footer className={classes.footer}>
-                <Typography variant="h6" align="center" gutterBottom>
-                    Tasker App
-                </Typography>
-                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                    Made by Rostyslav Haidukov
-                </Typography>
-            </footer>
+            <Footer/>
         </>
     );
 }

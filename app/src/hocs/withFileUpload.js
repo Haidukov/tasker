@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function withImgUpload(WrappedComponent) {
+export default function withFileUpload(WrappedComponent) {
     return class extends React.Component {
         fileRef = React.createRef();
 
         state = {
-            image: null
+            file: null
         };
 
         openFileDialog = () => {
@@ -18,14 +18,12 @@ export default function withImgUpload(WrappedComponent) {
                 this.setState({
                     image: URL.createObjectURL(e.target.files[0])
                 });
-                const event = {
-                    ...e
-                };
+                const event = { ...e };
                 event.target = {
                     ...event.target,
                     value: e.target.files[0],
                     name: this.props.name
-                }
+                };
                 this.props.onChange(event);
             }
         };
@@ -35,7 +33,7 @@ export default function withImgUpload(WrappedComponent) {
                 <WrappedComponent
                     ref={this.fileRef}
                     {...this.props}
-                    img={this.state.image}
+                    file={this.state.file}
                     onChange={this.onChange}
                     openFileDialog={this.openFileDialog}
                 />
@@ -44,7 +42,7 @@ export default function withImgUpload(WrappedComponent) {
     }
 };
 
-withImgUpload.propTypes = {
+withFileUpload.propTypes = {
     classes: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,

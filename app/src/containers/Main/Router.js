@@ -6,9 +6,10 @@ import Workspace from './WorkspacePage';
 import SprintForm from './SprintForm';
 import SprintsList from './SpintsList';
 import StudentsList from './StudentsList';
+import TasksList from './TasksList';
+import TaskForm from './TaskForm';
 
-const workspaceRouter = ({ match }) => {
-    return (
+const workspaceRouter = ({ match }) => (
     <BrowserRouter>
         <Switch>
             <Route
@@ -19,6 +20,16 @@ const workspaceRouter = ({ match }) => {
             <Route
                 path={`${match.path}/:id/add`}
                 component={SprintForm}
+                match={match}
+            />
+            <Route
+                path={`${match.path}/:id/sprints/:sprintId/add`}
+                component={TaskForm}
+                match={match}
+            />
+            <Route
+                path={`${match.path}/:id/sprints/:sprintId`}
+                component={TasksList}
                 match={match}
             />
             <Route
@@ -44,7 +55,7 @@ const workspaceRouter = ({ match }) => {
             />
         </Switch>
     </BrowserRouter>
-)};
+);
 
 export default workspaceRouter;
 

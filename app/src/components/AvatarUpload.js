@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/es/Avatar/Avatar';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import withImgUpload from '../hocs/withImgUpload';
+import withFileUpload from '../hocs/withFileUpload';
 
 const styles = theme => ({
     avatar: {
@@ -21,7 +21,7 @@ const AvatarUpload = React.forwardRef((props, ref) => {
                 <Avatar
                     onClick={props.openFileDialog}
                     className={props.classes.avatar}
-                    src={props.img}
+                    src={props.file}
                 />
                 <input
                     ref={ref}
@@ -42,4 +42,4 @@ AvatarUpload.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(withImgUpload(AvatarUpload));
+export default withStyles(styles)(withFileUpload(AvatarUpload));
