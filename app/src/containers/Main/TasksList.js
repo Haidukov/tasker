@@ -10,8 +10,7 @@ import { withRouter } from 'react-router-dom';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import withUser from '../../hocs/withUser';
 import { getTasks } from '../../services/tasks.service';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import Button from '@material-ui/core/es/Button/Button';
+import DownloadButton from '../../components/DownloadButton';
 
 const styles = theme => ({
     layout: {
@@ -48,16 +47,10 @@ const styles = theme => ({
     cardContent: {
         textAlign: 'center',
         flexGrow: 1,
-    },
-    downloadButton: {
-        margin: theme.spacing.unit,
-    },
-    downloadIcon: {
-        marginLeft: theme.spacing.unit,
-    },
+    }
 });
 
-class WorkspacesList extends React.Component {
+class TasksList extends React.Component {
     state = {
         tasks: []
     };
@@ -107,15 +100,9 @@ class WorkspacesList extends React.Component {
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 { task.name }
                                             </Typography>
-                                            <Button
-                                                variant='contained'
-                                                color='primary'
-                                                className={classes.downloadButton}
-
-                                            >
+                                            <DownloadButton>
                                                 Download
-                                                <CloudDownloadIcon className={classes.downloadIcon}/>
-                                            </Button>
+                                            </DownloadButton>
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -128,4 +115,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withUser(withRouter(withStyles(styles)(WorkspacesList)));
+export default withUser(withRouter(withStyles(styles)(TasksList)));

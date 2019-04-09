@@ -22,4 +22,14 @@ tasksRouter.post('/sprints/:sprintId/tasks',
     tasksController.addTask
 );
 
+tasksRouter.get('/workspaces/:workspaceId/tasks',
+    jwtMiddleware,
+    tasksController.getTasksByWorkspace
+);
+
+tasksRouter.put('/tasks/:taskId',
+    jwtMiddleware,
+    tasksController.changeTaskStatus
+);
+
 module.exports = tasksRouter;

@@ -76,8 +76,8 @@ class WorkspacesList extends React.Component {
         })
     };
 
-    goToWorkspace = (id) => {
-        this.props.history.push(`/dashboard/${id}`);
+    goToStudentBoard = (id) => {
+        this.props.history.push(`${this.props.match.url}/${id}`);
     };
 
     render() {
@@ -106,11 +106,10 @@ class WorkspacesList extends React.Component {
                             </Grid>
                             {students.map(student => {
                                 const url = `${process.env.REACT_APP_BACKEND_URL}/${student.avatar}`;
-                                console.log(url);
                                 return (
                                     <Grid item key={student._id} sm={6} md={4} lg={3}>
                                         <Card className={classes.card}
-                                              onClick={() => this.goToWorkspace(student._id)}>
+                                              onClick={() => this.goToStudentBoard(student._id)}>
                                             <CardMedia
                                                 className={classes.cardMedia}
                                                 title="Image title"

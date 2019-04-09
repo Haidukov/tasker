@@ -4,7 +4,6 @@ const Workspace = require('../models/Workspace');
 const User = require('../models/User');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
-const HttpException = require('../exceptions/http-exception');
 const Task = require('../models/task');
 
 async function addTask(req, res, next) {
@@ -72,12 +71,37 @@ async function getWorkspace(req, res, next) {
 async function getTasksBySprint(req, res, next) {
     const { sprintId } = req.params;
     const tasks = await Task.find({ 'sprint': sprintId }).exec();
+    res.status(200);
     res.json(tasks);
+}
+
+async function getTasksByWorkspace(req, res, next) {
+    const { workspaceId } = req.params;
+    const tasks = (await Task
+        .find()
+        .populate({
+            path: 'sprint',
+        })
+        .exec())
+        .filter(task => task.sprint.workspaceId === workspaceId)
+    res.status(200);
+    res.json(tasks);
+}
+
+async function changeTaskStatus(req, res, next) {
+    const { taskId } = req.params;
+    const { status } = req.body;
+    try {
+        await Task.findOneAndUpdate({ _id: taskId }, { $set: { status } }).exec();
+        res.sendStatus(202);
+    } catch (e) {
+        next(e);
+    }
 }
 
 module.exports = {
     addTask,
-    getWorkspaces,
-    getWorkspace,
-    getTasksBySprint
+    getTasksBySprint,
+    getTasksByWorkspace,
+    changeTaskStatus
 }

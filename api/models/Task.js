@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const Statuses = require('../constants/task-statuses');
 
 const taskSchema = new Schema({
     name: {
@@ -13,6 +14,11 @@ const taskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Sprint',
         required: true
+    },
+    status: {
+        type: String,
+        enum: [Statuses.TODO, Statuses.IN_PROGRESS, Statuses.DONE, Statuses.CLOSED],
+        default: Statuses.TODO
     }
 });
 

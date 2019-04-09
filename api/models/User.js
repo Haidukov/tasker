@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bCrypt = require('bcrypt');
 const uuid = require('uuid');
+const Roles = require('../constants/user-roles');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -23,8 +24,8 @@ const userSchema = new mongoose.Schema({
     lastVisit: Date,
     role: {
         type: String,
-        enum: ['Teacher', 'Student'],
-        default: 'Teacher'
+        enum: [Roles.TEACHER, Roles.STUDENT],
+        default: Roles.TEACHER
     },
     avatar: {
         type: String,
