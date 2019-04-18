@@ -43,7 +43,9 @@ class SprintForm extends React.Component {
 
     onSubmit = () => {
         const { id } = this.props.match.params;
-        addSprint(id, this.state.form);
+        addSprint(id, this.state.form).then(() => {
+            window.history.back();
+        });
     };
 
     handleChange = (event) => {

@@ -10,7 +10,9 @@ import { createStudentInvite } from '../../services/students.service';
 
 const styles = theme => ({
     paper: {
-        position: 'absolute',
+        position: 'fixed',
+        left: '50%',
+        transform: `translateX(-50%)`,
         width: theme.spacing.unit * 50,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],

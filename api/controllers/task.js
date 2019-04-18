@@ -5,6 +5,7 @@ const User = require('../models/User');
 const { validationResult } = require('express-validator/check');
 const generateError = require('../exceptions/errors-msg');
 const Task = require('../models/task');
+const Statuses = require('../constants/task-statuses');
 
 async function addTask(req, res, next) {
     const errors = validationResult(req);
@@ -16,7 +17,7 @@ async function addTask(req, res, next) {
     const { name } = req.body;
     try {
         let fileUrl;
-        if (req.files.file) {
+        if (req.files && req.files.file) {
             try {
                 const { data } = req.files.file;
                 const extension = req.files.file.name.split('.')[1];
@@ -83,16 +84,38 @@ async function getTasksByWorkspace(req, res, next) {
             path: 'sprint',
         })
         .exec())
+        .filter(task => task.sprint.workspaceId === workspaceId);
+    res.status(200);
+    res.json(tasks);
+}
+
+async function getTasksByWorkspaceAndStudent(req, res, next) {
+    const { workspaceId, studentId } = req.params;
+    console.log(studentId);
+    const tasks = (await Task
+        .find()
+        .populate({
+            path: 'sprint',
+        })
+        .exec())
         .filter(task => task.sprint.workspaceId === workspaceId)
+        .filter(task => String(studentId) === String(task.studentId) || task.studentId === null);
     res.status(200);
     res.json(tasks);
 }
 
 async function changeTaskStatus(req, res, next) {
     const { taskId } = req.params;
-    const { status } = req.body;
+    const { status, studentId } = req.body;
     try {
-        await Task.findOneAndUpdate({ _id: taskId }, { $set: { status } }).exec();
+        const task = await Task.findOne({ _id: taskId }).exec();
+        const data = await Task.findOneAndUpdate({ _id: taskId },
+            {
+                status,
+                studentId: studentId && task && task.status !== Statuses.TODO ? studentId : null
+            }
+        ).exec();
+        console.log(data);
         res.sendStatus(202);
     } catch (e) {
         next(e);
@@ -103,5 +126,6 @@ module.exports = {
     addTask,
     getTasksBySprint,
     getTasksByWorkspace,
+    getTasksByWorkspaceAndStudent,
     changeTaskStatus
 }

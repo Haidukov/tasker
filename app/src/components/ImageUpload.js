@@ -20,32 +20,41 @@ const styles = theme => ({
     }
 });
 
-const ImageUpload = React.forwardRef((props, ref) => (
+const ImageUpload = React.forwardRef((
+    {
+        classes,
+        file,
+        id,
+        label,
+        onChange,
+        name,
+        openFileDialog
+    }, ref) => (
     <>
         <Grid
             container
             direction='column'
             alignItems='center'>
-            <Card className={props.classes.card}>
+            <Card className={classes.card}>
                 <img
-                    className={props.classes.img}
-                    src={props.file}
+                    className={classes.img}
+                    src={file}
                 />
             </Card>
-            <label htmlFor={props.id}>
+            <label htmlFor={id}>
                 <Button
-                    onClick={props.openFileDialog}
-                    className={props.classes.button}
+                    onClick={openFileDialog}
+                    className={classes.button}
                     variant='contained'
                 >
-                    {props.label}
+                    {label}
                 </Button>
             </label>
             <input
                 ref={ref}
-                id={props.id}
-                name={props.name}
-                onChange={props.onChange}
+                id={id}
+                name={name}
+                onChange={onChange}
                 hidden accept='image/*'
                 type='file'/>
         </Grid>

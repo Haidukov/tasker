@@ -47,7 +47,7 @@ class SignUp extends React.Component {
     }
 
     componentDidMount() {
-        ValidatorForm.addValidationRule('isPasswordMatch', value => value !== this.state.form.password);
+        ValidatorForm.addValidationRule('isPasswordMatch', value => value === this.state.form.password);
     }
 
     render() {

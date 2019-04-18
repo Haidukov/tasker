@@ -16,7 +16,7 @@ export default function withFileUpload(WrappedComponent) {
         onChange = e => {
             if (e.target.files && e.target.files.length) {
                 this.setState({
-                    image: URL.createObjectURL(e.target.files[0])
+                    file: URL.createObjectURL(e.target.files[0])
                 });
                 const event = { ...e };
                 event.target = {

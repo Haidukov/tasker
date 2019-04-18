@@ -42,7 +42,9 @@ class WorkspaceForm extends React.Component {
     };
 
     onSubmit = () => {
-        addWorkspace(this.state.form);
+        addWorkspace(this.state.form).then(() => {
+            window.history.back();
+        });
     };
 
     handleChange = (event) => {

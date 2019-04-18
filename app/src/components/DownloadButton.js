@@ -12,15 +12,17 @@ const styles = theme => ({
     },
 });
 
-const DownloadButton = ({ classes, children }) => (
+const DownloadButton = React.forwardRef(({ classes, children, onClick }, ref) => (
     <Button
         variant='contained'
         color='primary'
+        ref={ref}
+        onClick={onClick}
         className={classes.downloadButton}
     >
         {children}
         <CloudDownloadIcon className={classes.downloadIcon}/>
     </Button>
-);
+));
 
 export default withStyles(styles)(DownloadButton);

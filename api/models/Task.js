@@ -19,6 +19,11 @@ const taskSchema = new Schema({
         type: String,
         enum: [Statuses.TODO, Statuses.IN_PROGRESS, Statuses.DONE, Statuses.CLOSED],
         default: Statuses.TODO
+    },
+    studentId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
 });
 

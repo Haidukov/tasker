@@ -68,8 +68,14 @@ class WorkspacesList extends React.Component {
         this.props.history.push('/dashboard/add');
     };
 
-    goToWorkspace = (id) => {
-        this.props.history.push(`/dashboard/${id}`);
+    goToWorkspace = workspaceId => {
+        const { user: { role, id } } = this.props.user;
+        if (role === Roles.TEACHER) {
+            this.props.history.push(`/dashboard/${workspaceId}`);
+        }
+        else {
+            this.props.history.push(`/dashboard/${workspaceId}/students/${id}`);
+        }
     };
 
     render() {

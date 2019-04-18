@@ -13,7 +13,7 @@ const app = express();
 const server = http.createServer(app);
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, autoReconnect: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -9,7 +9,8 @@ import { DragSource } from 'react-dnd';
 const styles = theme => ({
     task: {
         padding: theme.spacing.unit,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        marginBottom: theme.spacing.unit
     },
     content: {
         padding: `${theme.spacing.unit}px ${2 * theme.spacing.unit}px 0`
@@ -47,7 +48,10 @@ const Task = ({ classes, name, sprint, fileUrl, isDragging, connectDragSource })
                         {sprint}
                     </Typography>
                 </div>
-                <DownloadButton>
+                <DownloadButton onClick={() => {
+                    const url = `${process.env.REACT_APP_BACKEND_URL}/${fileUrl}`;
+                    window.open(url);
+                }}>
                     Download
                 </DownloadButton>
             </Card>

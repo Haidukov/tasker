@@ -8,6 +8,10 @@ export function getTasksByWorkspace(workspaceId) {
     return Http.get(`/workspaces/${workspaceId}/tasks`);
 }
 
+export function getTasksByWorkspaceAndStudent(workspaceId, studentId) {
+    return Http.get(`/workspaces/${workspaceId}/student/${studentId}/tasks`);
+}
+
 export function addTask(sprintId, form) {
     const formData = new FormData();
     for (let key in form) {
@@ -16,6 +20,6 @@ export function addTask(sprintId, form) {
     return Http.post(`/sprints/${sprintId}/tasks`, formData)
 }
 
-export function changeTaskStatus(taskId, status) {
-    return Http.put(`/tasks/${taskId}`, { status });
+export function changeTaskStatus(taskId, status, studentId) {
+    return Http.put(`/tasks/${taskId}`, { status, studentId });
 }

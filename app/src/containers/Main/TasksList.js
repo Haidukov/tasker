@@ -30,14 +30,14 @@ const styles = theme => ({
         height: '100%',
         padding: '5px',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column'
+    },
+    addCard: {
+        padding: `${theme.spacing.unit * 1}px ${theme.spacing.unit * 1}px 0`,
         '&:hover': {
             cursor: 'pointer',
             boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'
         }
-    },
-    addCard: {
-        padding: `${theme.spacing.unit * 1}px ${theme.spacing.unit * 1}px 0`,
     },
     cardMedia: {
         paddingTop: '-70%',
@@ -68,10 +68,6 @@ class TasksList extends React.Component {
         this.props.history.push(`${this.props.match.url}/add`);
     };
 
-    goToWorkspace = (id) => {
-        this.props.history.push(`/dashboard/${id}`);
-    };
-
     render() {
         const { classes, match } = this.props;
         const { tasks } = this.state;
@@ -94,13 +90,12 @@ class TasksList extends React.Component {
                             const url = `${process.env.REACT_APP_BACKEND_URL}/${task.fileUrl}`;
                             return (
                                 <Grid item key={task._id} sm={6} md={4} lg={3}>
-                                    <Card className={classes.card}
-                                          onClick={() => this.goToWorkspace(task._id)}>
+                                    <Card className={classes.card}>
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
                                                 { task.name }
                                             </Typography>
-                                            <DownloadButton>
+                                            <DownloadButton onClick={() => window.location.href={url}}>
                                                 Download
                                             </DownloadButton>
                                         </CardContent>

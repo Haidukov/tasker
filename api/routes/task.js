@@ -27,6 +27,11 @@ tasksRouter.get('/workspaces/:workspaceId/tasks',
     tasksController.getTasksByWorkspace
 );
 
+tasksRouter.get('/workspaces/:workspaceId/student/:studentId/tasks',
+    jwtMiddleware,
+    tasksController.getTasksByWorkspaceAndStudent
+);
+
 tasksRouter.put('/tasks/:taskId',
     jwtMiddleware,
     tasksController.changeTaskStatus

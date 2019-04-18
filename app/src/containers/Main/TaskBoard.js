@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import { changeTaskStatus, getTasksByWorkspace } from '../../services/tasks.service';
+import { changeTaskStatus, getTasksByWorkspace, getTasksByWorkspaceAndStudent } from '../../services/tasks.service';
 import * as Statuses from '../../constants/task-statuses';
 import TasksColumn from './TasksColumn';
 
@@ -17,7 +17,8 @@ class TaskBoard extends React.Component {
     };
 
     componentDidMount() {
-        getTasksByWorkspace(this.props.match.params.id)
+        const { id, studentId } = this.props.match.params;
+        getTasksByWorkspaceAndStudent(id, studentId)
             .then(({ data }) => {
                 this.setState({
                     tasks: data
@@ -26,7 +27,8 @@ class TaskBoard extends React.Component {
     }
 
     onDrop = (taskId, newStatus) => {
-        changeTaskStatus(taskId, newStatus)
+        const { studentId } = this.props.match.params;
+        changeTaskStatus(taskId, newStatus, studentId)
             .then(() => {
                 const changedTask = this.state.tasks.find(task => task._id === taskId);
                 changedTask.status = newStatus;

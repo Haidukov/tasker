@@ -45,14 +45,15 @@ class TaskForm extends React.Component {
 
     onSubmit = () => {
         const { sprintId } = this.props.match.params;
-        addTask(sprintId, this.state.form);
+        addTask(sprintId, this.state.form).then(() => {
+            window.history.back();
+        });
     };
 
     handleChange = (event) => {
         const { form } = this.state;
         form[event.target.name] = event.target.value;
         this.setState({ form });
-        console.log(this.state.form);
     };
 
     render() {
