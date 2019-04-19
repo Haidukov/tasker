@@ -128,4 +128,4 @@ module.exports = {
     getTasksByWorkspace,
     getTasksByWorkspaceAndStudent,
     changeTaskStatus
-}
+};
