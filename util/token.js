@@ -10,4 +10,4 @@ function createToken(user) {
 
 module.exports = {
     createToken
-}
+};

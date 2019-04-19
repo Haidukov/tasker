@@ -111,6 +111,7 @@ async function changeTaskStatus(req, res, next) {
         const task = await Task.findOne({ _id: taskId }).exec();
         const data = await Task.findOneAndUpdate({ _id: taskId },
             {
+
                 status,
                 studentId: studentId && task && task.status !== Statuses.TODO ? studentId : null
             }

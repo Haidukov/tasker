@@ -10,6 +10,3 @@ const MailTransport = nodemailer.createTransport({
 });
 
 module.exports = MailTransport;
-
-
-
