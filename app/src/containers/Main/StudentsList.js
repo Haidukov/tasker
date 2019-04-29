@@ -91,7 +91,7 @@ class WorkspacesList extends React.Component {
                 <main>
                     <div className={classNames(classes.layout, classes.cardGrid)}>
                         <Grid container spacing={40}>
-                            <Grid item sm={6} md={4} lg={3}>
+                            <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <Card
                                     className={classNames(classes.card, classes.addCard)}
                                     onClick={this.openModal}>
@@ -110,7 +110,7 @@ class WorkspacesList extends React.Component {
                             {students.map(student => {
                                 const url = `${process.env.REACT_APP_BACKEND_URL}/${student.avatar}`;
                                 return (
-                                    <Grid item key={student._id} sm={6} md={4} lg={3}>
+                                    <Grid item key={student._id} xs={12} sm={6} md={4} lg={3}>
                                         <Card className={classes.card}
                                               onClick={() => this.goToStudentBoard(student._id)}>
                                             <CardMedia

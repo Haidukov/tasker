@@ -92,7 +92,7 @@ class WorkspacesList extends React.Component {
             <main>
                 <div className={classNames(classes.layout, classes.cardGrid)}>
                     <Grid container spacing={40}>
-                        <Grid item sm={6} md={4} lg={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <Card
                                 className={classNames(classes.card, classes.addCard)}
                                 onClick={this.goToWorkspaceForm}>
@@ -111,7 +111,7 @@ class WorkspacesList extends React.Component {
                         {workspaces.map(workspace => {
                             const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
                             return (
-                                <Grid item key={workspace._id} sm={6} md={4} lg={3}>
+                                <Grid item key={workspace._id} xs={12} sm={6} md={4} lg={3}>
                                     <Card className={classes.card}
                                           onClick={() => this.goToWorkspace(workspace._id)}>
                                         <CardMedia
