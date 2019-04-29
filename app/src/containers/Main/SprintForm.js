@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import withUser from '../../hocs/withUser'
 import ImageUpload from '../../components/ImageUpload';
 import { addSprint } from '../../services/sprint.service';
+import withLoading from '../../hocs/withLoading';
+import withNotifications from '../../hocs/withNotifications';
 
 const styles = theme => ({
     card: {
@@ -41,11 +43,18 @@ class SprintForm extends React.Component {
         error: null
     };
 
-    onSubmit = () => {
+    onSubmit = async () => {
         const { id } = this.props.match.params;
-        addSprint(id, this.state.form).then(() => {
+        try {
+            this.props.showProgress();
+            await addSprint(id, this.state.form);
+            this.props.showSuccessNotification('You have added a sprint');
             window.history.back();
-        });
+        } catch (e) {
+            this.props.showErrorNotification('Failed to add a sprint');
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = (event) => {
@@ -53,11 +62,6 @@ class SprintForm extends React.Component {
         form[event.target.name] = event.target.value;
         this.setState({ form });
     };
-
-    componentDidMount() {
-        ValidatorForm.addValidationRule('image', () => this.state.form.image);
-    }
-
 
     render() {
         const { classes } = this.props;
@@ -132,7 +136,7 @@ class SprintForm extends React.Component {
 }
 
 
-export default withUser(withStyles(styles)(SprintForm));
+export default withNotifications(withLoading(withUser(withStyles(styles)(SprintForm))));
 
 
 

@@ -6,11 +6,11 @@ import Typography from '@material-ui/core/es/Typography/Typography';
 import Button from '@material-ui/core/es/Button/Button';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Grid from '@material-ui/core/Grid';
-import { addWorkspace } from '../../services/workspace.service';
 import withUser from '../../hocs/withUser'
-import ImageUpload from '../../components/ImageUpload';
 import FileUploadButton from '../../components/FileUploadButton';
 import { addTask } from '../../services/tasks.service';
+import withLoading from '../../hocs/withLoading';
+import withNotifications from '../../hocs/withNotifications';
 
 const styles = theme => ({
     card: {
@@ -43,11 +43,18 @@ class TaskForm extends React.Component {
         error: null
     };
 
-    onSubmit = () => {
-        const { sprintId } = this.props.match.params;
-        addTask(sprintId, this.state.form).then(() => {
+    onSubmit = async () => {
+        try {
+            const { sprintId } = this.props.match.params;
+            this.props.showProgress();
+            await addTask(sprintId, this.state.form);
+            this.props.showSuccessNotification('You have added a task');
             window.history.back();
-        });
+        } catch (e) {
+            this.props.showErrorNotification('Failed to add a task');
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = (event) => {
@@ -107,7 +114,7 @@ class TaskForm extends React.Component {
 }
 
 
-export default withUser(withStyles(styles)(TaskForm));
+export default withNotifications(withLoading(withUser(withStyles(styles)(TaskForm))));
 
 
 

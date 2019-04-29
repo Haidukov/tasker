@@ -24,6 +24,10 @@ const taskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         default: null
+    },
+    order: {
+        type: Schema.Types.Number,
+        default: 1
     }
 });
 

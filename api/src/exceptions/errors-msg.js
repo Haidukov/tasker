@@ -1,4 +1,4 @@
-const ValidationException = require('../exceptions/validation-exception');
+const ValidationException = require('.//validation-exception');
 
 module.exports = err => {
     const errorsList = err.array();

@@ -44,7 +44,7 @@ Http.interceptors.response.use(
                     newRequest.headers = {
                         ...newRequest.headers,
                         Authorization: `Bearer ${data['accessToken']}`
-                    }
+                    };
                     return axios(newRequest);
 
                 } catch (e) {
@@ -56,5 +56,5 @@ Http.interceptors.response.use(
             }
         }
     }
-)
+);
 

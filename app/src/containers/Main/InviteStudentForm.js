@@ -7,6 +7,8 @@ import Paper from '@material-ui/core/es/Paper/Paper';
 import Grid from '@material-ui/core/Grid';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { createStudentInvite } from '../../services/students.service';
+import withLoading from '../../hocs/withLoading';
+import withNotifications from '../../hocs/withNotifications';
 
 const styles = theme => ({
     paper: {
@@ -31,11 +33,21 @@ class InviteStudentForm extends React.Component {
         email: '',
     };
 
-    onSubmit = event => {
+    onSubmit = async event => {
         event.preventDefault();
         const workspaceId = this.props.match.params.id;
-        createStudentInvite(workspaceId, this.state.email);
-        this.props.close();
+        try {
+            this.props.showProgress();
+            await createStudentInvite(workspaceId, this.state.email);
+            this.props.showSuccessNotification('You have invited a student to workspace');
+            this.props.close();
+        } catch ({ response }) {
+            response && response.status === 400 ?
+                this.props.showErrorNotification(response.data.message) :
+                this.props.showErrorNotification('Failed to invite a student to workspace');
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = event => {
@@ -57,7 +69,7 @@ class InviteStudentForm extends React.Component {
                             required
                             fullWidth
                             type='text'
-                            placeholder='Your username'
+                            placeholder='Student username'
                             onChange={this.handleChange}
                             name='username'
                             value={this.state.email}
@@ -84,4 +96,4 @@ InviteStudentForm.propTypes = {
     close: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(InviteStudentForm);
+export default withNotifications(withLoading(withStyles(styles)(InviteStudentForm)));

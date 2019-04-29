@@ -11,6 +11,7 @@ import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import withUser from '../../hocs/withUser';
 import { getTasks } from '../../services/tasks.service';
 import DownloadButton from '../../components/DownloadButton';
+import withLoading from '../../hocs/withLoading';
 
 const styles = theme => ({
     layout: {
@@ -56,12 +57,18 @@ class TasksList extends React.Component {
     };
 
     componentDidMount() {
+        this.getTasks();
+    }
+
+    async getTasks() {
         const { sprintId } = this.props.match.params;
-        getTasks(sprintId).then(({ data }) => {
-            this.setState({
-                tasks: data
-            })
-        });
+        try {
+            this.props.showProgress();
+            const { data: tasks } = await getTasks(sprintId);
+            this.setState({ tasks });
+        } finally {
+            this.props.hideProgress();
+        }
     }
 
     goToTaskForm = () => {
@@ -110,4 +117,4 @@ class TasksList extends React.Component {
     }
 }
 
-export default withUser(withRouter(withStyles(styles)(TasksList)));
+export default withLoading(withUser(withRouter(withStyles(styles)(TasksList))));

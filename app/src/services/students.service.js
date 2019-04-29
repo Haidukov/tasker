@@ -10,8 +10,8 @@ export function createStudentInvite(workspaceId, email) {
     return Http.post(`/workspaces/${workspaceId}/invites`, { email });
 }
 
-export function confirmInvite(inviteId, form) {
-    return Http.post(`/invites/${inviteId}`, form)
-        .then(({ data }) => setTokenToLocalStorage(data))
-        .then(fetchUserData);
+export async function confirmInvite(inviteId, form) {
+    const { data } = await Http.post(`/invites/${inviteId}`, form);
+    setTokenToLocalStorage(data);
+    return await fetchUserData();
 }

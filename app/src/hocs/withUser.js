@@ -1,5 +1,5 @@
-import UserContext from '../contexts/UserContext';
 import React from 'react';
+import UserContext from '../contexts/UserContext';
 
 export default function withUser(WrappedComponent) {
     return props => (

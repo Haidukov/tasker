@@ -1,5 +1,5 @@
-const ValidationException = require('../exceptions/validation-exception');
-const HttpException = require('../exceptions/http-exception');
+const ValidationException = require('.//validation-exception');
+const HttpException = require('.//http-exception');
 
 module.exports = (err, req, res, next) => {
     if (err instanceof ValidationException) {

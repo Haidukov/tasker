@@ -36,9 +36,11 @@ const collect = (connect, monitor) => ({
     }
 );
 
-const Task = ({ classes, name, sprint, fileUrl, isDragging, connectDragSource }) =>
+const Task = ({ classes, name, sprint, fileUrl, connectDragSource, isDragging }) =>
     connectDragSource(
-        <div>
+        <div style={{
+            display: !isDragging ? 'block' : 'none'
+        }}>
             <Card className={classes.task}>
                 <div className={classes.content}>
                     <Typography variant='h6'>

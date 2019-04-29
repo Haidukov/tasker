@@ -12,6 +12,8 @@ import styles from './styles';
 import { login } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
 import { withRouter } from 'react-router-dom';
+import withNotifications from '../../hocs/withNotifications';
+import withLoading from '../../hocs/withLoading';
 
 class SignUp extends React.Component {
     state = {
@@ -22,18 +24,25 @@ class SignUp extends React.Component {
         error: null
     };
 
-    onSubmit = () => {
-        login(this.state.form)
-            .then(this.props.user.setUser)
-            .then(() => this.props.history.push('/dashboard'))
-            .catch(({ response }) => this.setState({error: response.data.message}));
+    onSubmit = async () => {
+        this.props.showProgress();
+        try {
+            const data = await login(this.state.form);
+            this.props.user.setUser(data);
+            this.props.showSuccessNotification('login');
+            this.props.history.push('/dashboard');
+        } catch ({ response }) {
+            response && this.setState({error: response.data.message});
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = (event) => {
         const { form } = this.state;
         form[event.target.name] = event.target.value;
         this.setState({ form });
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -64,8 +73,13 @@ class SignUp extends React.Component {
                             className={classes.input}
                         />
                         <TextValidator
-                            validators={['required', 'minStringLength:8']}
-                            errorMessages={['This field is required', 'Password should me more than 8 symbols']}
+                            validators={[
+                                'required', 'minStringLength:8'
+                            ]}
+                            errorMessages={[
+                                'This field is required',
+                                'Password should me more than 8 symbols'
+                            ]}
                             required
                             fullWidth
                             type='password'
@@ -106,7 +120,7 @@ class SignUp extends React.Component {
 }
 
 
-export default withRouter(withUser(withStyles(styles)(SignUp)));
+export default withLoading(withNotifications(withRouter(withUser(withStyles(styles)(SignUp)))));
 
 
 

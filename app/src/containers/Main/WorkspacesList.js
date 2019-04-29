@@ -11,6 +11,7 @@ import { getWorkspaces, getWorkspacesByStudent } from '../../services/workspace.
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import withUser from '../../hocs/withUser';
 import * as Roles from '../../constants/user-role';
+import withLoading from '../../hocs/withLoading';
 
 const styles = theme => ({
     layout: {
@@ -55,13 +56,20 @@ class WorkspacesList extends React.Component {
     };
 
     componentDidMount() {
+        this.getWorkspaces();
+    }
+
+    async getWorkspaces() {
+        const { showProgress, hideProgress } = this.props;
         const { user: { role, id } } = this.props.user;
         const request = role === Roles.TEACHER ? () => getWorkspaces() : () => getWorkspacesByStudent(id);
-        request().then(({ data }) => {
-            this.setState({
-                workspaces: data
-            })
-        });
+        try {
+            showProgress();
+            const { data: workspaces } = await request();
+            this.setState({ workspaces });
+        } finally {
+            hideProgress();
+        }
     }
 
     goToWorkspaceForm = () => {
@@ -72,8 +80,7 @@ class WorkspacesList extends React.Component {
         const { user: { role, id } } = this.props.user;
         if (role === Roles.TEACHER) {
             this.props.history.push(`/dashboard/${workspaceId}`);
-        }
-        else {
+        } else {
             this.props.history.push(`/dashboard/${workspaceId}/students/${id}`);
         }
     };
@@ -101,7 +108,7 @@ class WorkspacesList extends React.Component {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        {workspaces.map( workspace => {
+                        {workspaces.map(workspace => {
                             const url = `${process.env.REACT_APP_BACKEND_URL}/${workspace.imageUrl}`;
                             return (
                                 <Grid item key={workspace._id} sm={6} md={4} lg={3}>
@@ -114,10 +121,10 @@ class WorkspacesList extends React.Component {
                                         />
                                         <CardContent className={classes.cardContent}>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                { workspace.name }
+                                                {workspace.name}
                                             </Typography>
                                             <Typography>
-                                                { workspace.description }
+                                                {workspace.description}
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -131,4 +138,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withUser(withRouter(withStyles(styles)(WorkspacesList)));
+export default withLoading(withUser(withRouter(withStyles(styles)(WorkspacesList))));

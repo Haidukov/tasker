@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import { addWorkspace } from '../../services/workspace.service';
 import withUser from '../../hocs/withUser'
 import ImageUpload from '../../components/ImageUpload';
+import withLoading from '../../hocs/withLoading';
+import withNotifications from '../../hocs/withNotifications';
 
 const styles = theme => ({
     card: {
@@ -41,10 +43,17 @@ class WorkspaceForm extends React.Component {
         error: null
     };
 
-    onSubmit = () => {
-        addWorkspace(this.state.form).then(() => {
+    onSubmit = async () => {
+        try {
+            this.props.showProgress();
+            await addWorkspace(this.state.form)
+            this.props.showSuccessNotification('You have successfully added a workspace');
             window.history.back();
-        });
+        } catch (e) {
+            this.props.showErrorNotification('Failed to add a workspace. Try again please');
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = (event) => {
@@ -52,11 +61,6 @@ class WorkspaceForm extends React.Component {
         form[event.target.name] = event.target.value;
         this.setState({ form });
     };
-
-    componentDidCatch() {
-        ValidatorForm.addValidationRule('image', () => this.state.form.image);
-    }
-
 
     render() {
         const { classes } = this.props;
@@ -131,7 +135,7 @@ class WorkspaceForm extends React.Component {
 }
 
 
-export default withUser(withStyles(styles)(WorkspaceForm));
+export default withNotifications(withLoading(withUser(withStyles(styles)(WorkspaceForm))));
 
 
 

@@ -13,6 +13,7 @@ import { signUp } from '../../services/auth.service';
 import withUser from '../../hocs/withUser';
 import { withRouter } from 'react-router-dom';
 import AvatarUpload from '../../components/AvatarUpload';
+import withLoading from '../../hocs/withLoading';
 
 class SignUp extends React.Component {
     state = {
@@ -27,11 +28,17 @@ class SignUp extends React.Component {
         error: null
     };
 
-    onSubmit = () => {
-        signUp(this.state.form)
-            .then(this.props.user.setUser)
-            .then(() => this.props.history.push('/dashboard'))
-            .catch(({ response }) => this.setState({error: response.data.message}))
+    onSubmit = async () => {
+        try {
+            this.props.showProgress();
+            const data = await signUp(this.state.form);
+            this.props.user.setUser(data);
+            this.props.history.push('/dashboard');
+        } catch ({ response }) {
+            response && this.setState({error: response.data.message});
+        } finally {
+            this.props.hideProgress();
+        }
     };
 
     handleChange = (event) => {
@@ -44,7 +51,7 @@ class SignUp extends React.Component {
             form[event.target.name] = event.target.value;
             this.setState({ form });
         }
-    }
+    };
 
     componentDidMount() {
         ValidatorForm.addValidationRule('isPasswordMatch', value => value === this.state.form.password);
@@ -168,7 +175,7 @@ class SignUp extends React.Component {
 }
 
 
-export default withRouter(withUser(withStyles(styles)(SignUp)));
+export default withLoading(withRouter(withUser(withStyles(styles)(SignUp))));
 
 
 

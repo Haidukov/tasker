@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { getWorkspace } from '../../services/workspace.service';
 import { withRouter, Link } from 'react-router-dom';
+import withLoading from '../../hocs/withLoading';
 
 const styles = theme => ({
     card: {
@@ -17,28 +18,29 @@ const styles = theme => ({
         maxWidth: 345,
     },
     media: {
-        // ⚠️ object-fit is not supported by IE 11.
         objectFit: 'cover',
     },
 });
 
-class ImgMediaCard extends React.Component {
+class WorkspacePage extends React.Component {
     state = {
         workspace: null
     };
 
     componentDidMount() {
-        getWorkspace(this.props.match.params.id)
-            .then(({ data }) => {
-                this.setState({
-                    workspace: data
-                });
-            })
+        this.getWorkspace();
     }
 
-    goToSprintsList = (id) => {
-        this.props.history.push(`/dashboard/${id}`);
-    };
+    async getWorkspace() {
+        try {
+            this.props.showProgress();
+            const { data: workspace } = await getWorkspace(this.props.match.params.id);
+            this.setState({ workspace });
+        } finally {
+            this.props.hideProgress();
+        }
+    }
+
 
     render() {
         const { classes, match } = this.props;
@@ -82,8 +84,4 @@ class ImgMediaCard extends React.Component {
     }
 }
 
-ImgMediaCard.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withRouter(withStyles(styles)(ImgMediaCard));
+export default withLoading(withRouter(withStyles(styles)(WorkspacePage)));

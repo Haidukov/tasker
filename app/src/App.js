@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Router from './router';
-import UserContext from './contexts/UserContext';
-import './App.scss';
-import { getUserFromLocalStorage } from './services/local-storage.service';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import UserContext from './contexts/UserContext';
+import { getUserFromLocalStorage } from './services/local-storage.service';
+import NotificationsProvider from './components/Notifications/NotificationsProvider';
+import './App.scss';
+import ProgressProvider from './components/Progress/ProgressProvider';
 
 class App extends Component {
 
@@ -24,7 +26,11 @@ class App extends Component {
         return (
             <DragDropContextProvider backend={HTML5Backend}>
                 <UserContext.Provider value={userContextValue}>
-                    <Router/>
+                    <NotificationsProvider>
+                        <ProgressProvider>
+                            <Router/>
+                        </ProgressProvider>
+                    </NotificationsProvider>
                 </UserContext.Provider>
             </DragDropContextProvider>
         );

@@ -21,7 +21,10 @@ const listTarget = {
         return {
             status: props.status
         };
-    }
+    },
+    hover: (props, monitor, component) => {
+        console.log(component);
+    },
 };
 
 const collect = (connect, monitor) => ({
@@ -30,7 +33,7 @@ const collect = (connect, monitor) => ({
     target: monitor.getDropResult()
 });
 
-const TasksColumn = ({ tasks, status, classes, connectDropTarget, isOver, onDrop }) =>
+const TasksColumn = ({ tasks, status, classes, connectDropTarget, isOver, onDrop, onDrag }) =>
     connectDropTarget(
         <div>
             <Paper className={classes.paper}>
@@ -46,8 +49,7 @@ const TasksColumn = ({ tasks, status, classes, connectDropTarget, isOver, onDrop
                                     anotherTask.status !== task.status
                             });
                             return !!!anotherTaskWithThatSprint;
-                        }
-                        else return true;
+                        } else return true;
                     })
                     .map(task =>
                         <Task

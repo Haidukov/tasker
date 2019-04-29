@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { getWorkspace, getWorkspaces } from '../../services/workspace.service';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import { getSprints } from '../../services/sprint.service';
+import withLoading from '../../hocs/withLoading';
 
 const styles = theme => ({
     layout: {
@@ -54,12 +55,18 @@ class SprintsList extends React.Component {
     };
 
     componentDidMount() {
+        this.getSprints();
+    }
+
+    async getSprints() {
         const { id } = this.props.match.params;
-        getSprints(id).then(({ data }) => {
-            this.setState({
-                sprints: data
-            });
-        });
+        try {
+            this.props.showProgress();
+            const { data: sprints } = await getSprints(id);
+            this.setState({ sprints });
+        } finally {
+            this.props.hideProgress();
+        }
     }
 
     goToSprintForm = () => {
@@ -124,4 +131,4 @@ class SprintsList extends React.Component {
     }
 }
 
-export default withRouter(withStyles(styles)(SprintsList));
+export default withLoading(withRouter(withStyles(styles)(SprintsList)));

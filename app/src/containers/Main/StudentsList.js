@@ -11,6 +11,7 @@ import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import Modal from '@material-ui/core/es/Modal/Modal';
 import InviteStudentForm from './InviteStudentForm';
 import { getStudentsByWorkspace } from '../../services/students.service';
+import withLoading from '../../hocs/withLoading';
 
 const styles = theme => ({
     layout: {
@@ -56,24 +57,26 @@ class WorkspacesList extends React.Component {
     };
 
     componentDidMount() {
+        this.getStudents();
+    }
+
+    async getStudents() {
         const workspaceId = this.props.match.params.id;
-        getStudentsByWorkspace(workspaceId).then(({ data }) => {
-            this.setState({
-                students: data
-            });
-        });
+        try {
+            this.props.showProgress();
+            const { data: students } = await getStudentsByWorkspace(workspaceId);
+            this.setState({ students });
+        } finally {
+            this.props.hideProgress();
+        }
     }
 
     openModal = () => {
-        this.setState({
-            isModalOpen: true
-        });
+        this.setState({ isModalOpen: true });
     };
 
     closeModal = () => {
-        this.setState({
-            isModalOpen: false
-        })
+        this.setState({ isModalOpen: false })
     };
 
     goToStudentBoard = (id) => {
@@ -135,4 +138,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withRouter(withStyles(styles)(WorkspacesList));
+export default withLoading(withRouter(withStyles(styles)(WorkspacesList)));

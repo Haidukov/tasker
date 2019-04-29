@@ -1,9 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import { changeTaskStatus, getTasksByWorkspace, getTasksByWorkspaceAndStudent } from '../../services/tasks.service';
+import { changeTaskStatus, getTasksByWorkspaceAndStudent } from '../../services/tasks.service';
 import * as Statuses from '../../constants/task-statuses';
 import TasksColumn from './TasksColumn';
+import withLoading from '../../hocs/withLoading';
+import withNotifications from '../../hocs/withNotifications';
 
 const styles = theme => ({
     container: {
@@ -11,33 +13,52 @@ const styles = theme => ({
     }
 });
 
-class TaskBoard extends React.Component {
+class TaskBoard extends React.PureComponent {
     state = {
         tasks: []
     };
 
     componentDidMount() {
-        const { id, studentId } = this.props.match.params;
-        getTasksByWorkspaceAndStudent(id, studentId)
-            .then(({ data }) => {
-                this.setState({
-                    tasks: data
-                })
-            });
+        this.getTasks();
     }
 
-    onDrop = (taskId, newStatus) => {
+    async getTasks() {
+        const { id, studentId } = this.props.match.params;
+        try {
+            this.props.showProgress();
+            const { data: tasks } = await getTasksByWorkspaceAndStudent(id, studentId);
+            this.setState({ tasks });
+        } finally {
+            this.props.hideProgress();
+        }
+    }
+
+    onDrop = async (taskId, newStatus) => {
         const { studentId } = this.props.match.params;
-        changeTaskStatus(taskId, newStatus, studentId)
-            .then(() => {
-                const changedTask = this.state.tasks.find(task => task._id === taskId);
-                changedTask.status = newStatus;
-                const tasks = [
-                    ...this.state.tasks.filter(task => task._id !== taskId),
-                    changedTask
-                ];
-                this.setState({ tasks })
-            });
+        try {
+            this.props.showProgress();
+            changeTaskStatus(taskId, newStatus, studentId);
+
+            const changedTask = this.state.tasks.find(task => task._id === taskId);
+            const previousStatus = changedTask.status;
+
+            changedTask.status = newStatus;
+            const tasks = [
+                ...this.state.tasks.filter(task => task._id !== taskId),
+                changedTask
+            ];
+            this.setState({ tasks });
+
+            changedTask.status !== previousStatus &&
+            this.props.showSuccessNotification('You have moved a task');
+        }
+        catch (e) {
+            await this.getTasks();
+            this.props.showErrorNotification('Failed to move a task');
+        }
+         finally {
+            this.props.hideProgress();
+        }
     };
 
     render() {
@@ -69,4 +90,4 @@ class TaskBoard extends React.Component {
     }
 }
 
-export default withStyles(styles)(TaskBoard);
+export default withNotifications(withLoading(withStyles(styles)(TaskBoard)));

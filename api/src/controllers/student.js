@@ -82,8 +82,6 @@ async function confirmInvite(req, res, next) {
     if (!userInvite) {
         next(new HttpException(400, 'You invitation is wrong'));
     }
-    console.log('hello');
-    console.log(userInvite);
     const { workspaceId } = userInvite;
     const username = userInvite.invitedEmail;
     const { password, firstName, lastName } = req.body;
