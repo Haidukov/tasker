@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import NotificationMessage from './NotificationMessage';
 import withNotifications from '../../hocs/withNotifications';
 
@@ -15,19 +16,24 @@ const styles = theme => ({
 });
 
 const NotificationsList = ({ notifications, classes, closeNotification }) => (
-    <div className={classes.notifications}>
+    <TransitionGroup className={classes.notifications}>
         {
             notifications.map(notification => (
-                <NotificationMessage
+                <CSSTransition
                     key={notification.id}
-                    id={notification.id}
-                    variant={notification.type}
-                    message={notification.message}
-                    onClose={closeNotification}
-                />
+                    timeout={500}
+                    classNames='item'
+                >
+                    <NotificationMessage
+                        id={notification.id}
+                        variant={notification.type}
+                        message={notification.message}
+                        onClose={closeNotification}
+                    />
+                </CSSTransition>
             ))
         }
-    </div>
+    </TransitionGroup>
 );
 
 export default withStyles(styles)(withNotifications(NotificationsList));

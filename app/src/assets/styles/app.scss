@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto';
+  min-height: 100vh;
+}
+
+$AppBarHeight: 64px;
+$FooterHeight: 115px;
+
+main {
+  min-height: calc(100vh - #{$AppBarHeight} - #{$FooterHeight});
+  height: 100%;
+  flex-grow: 1;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.error {
+  text-align: center;
+  margin: 5px 0 10px;
+  color: red;
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  &:visited {
+    text-decoration: none !important;
+  }
+}
+
+

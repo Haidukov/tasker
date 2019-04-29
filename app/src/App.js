@@ -5,7 +5,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import UserContext from './contexts/UserContext';
 import { getUserFromLocalStorage } from './services/local-storage.service';
 import NotificationsProvider from './components/Notifications/NotificationsProvider';
-import './App.scss';
 import ProgressProvider from './components/Progress/ProgressProvider';
 
 class App extends Component {
