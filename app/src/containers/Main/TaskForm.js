@@ -11,6 +11,8 @@ import FileUploadButton from '../../components/FileUploadButton';
 import { addTask } from '../../services/tasks.service';
 import withLoading from '../../hocs/withLoading';
 import withNotifications from '../../hocs/withNotifications';
+import withTitle from '../../hocs/withTitle';
+import withPageTitle from '../../hocs/withPageTitle';
 
 const styles = theme => ({
     card: {
@@ -114,7 +116,7 @@ class TaskForm extends React.Component {
 }
 
 
-export default withNotifications(withLoading(withUser(withStyles(styles)(TaskForm))));
+export default withTitle(withPageTitle(withNotifications(withLoading(withUser(withStyles(styles)(TaskForm))))));
 
 
 

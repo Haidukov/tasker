@@ -11,6 +11,8 @@ import withUser from '../../hocs/withUser'
 import ImageUpload from '../../components/ImageUpload';
 import withLoading from '../../hocs/withLoading';
 import withNotifications from '../../hocs/withNotifications';
+import withPageTitle from '../../hocs/withPageTitle';
+import withTitle from '../../hocs/withTitle';
 
 const styles = theme => ({
     card: {
@@ -135,7 +137,7 @@ class WorkspaceForm extends React.Component {
 }
 
 
-export default withNotifications(withLoading(withUser(withStyles(styles)(WorkspaceForm))));
+export default withTitle(withPageTitle(withNotifications(withLoading(withUser(withStyles(styles)(WorkspaceForm))))));
 
 
 

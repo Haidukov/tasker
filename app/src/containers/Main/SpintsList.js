@@ -7,10 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import { getWorkspace, getWorkspaces } from '../../services/workspace.service';
 import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import { getSprints } from '../../services/sprint.service';
 import withLoading from '../../hocs/withLoading';
+import withPageTitle from '../../hocs/withPageTitle';
+import withTitle from '../../hocs/withTitle';
 
 const styles = theme => ({
     layout: {
@@ -131,4 +132,4 @@ class SprintsList extends React.Component {
     }
 }
 
-export default withLoading(withRouter(withStyles(styles)(SprintsList)));
+export default withTitle(withPageTitle(withLoading(withRouter(withStyles(styles)(SprintsList)))));

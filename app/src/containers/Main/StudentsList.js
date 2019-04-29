@@ -12,6 +12,8 @@ import Modal from '@material-ui/core/es/Modal/Modal';
 import InviteStudentForm from './InviteStudentForm';
 import { getStudentsByWorkspace } from '../../services/students.service';
 import withLoading from '../../hocs/withLoading';
+import withTitle from '../../hocs/withTitle';
+import withPageTitle from '../../hocs/withPageTitle';
 
 const styles = theme => ({
     layout: {
@@ -61,6 +63,7 @@ class WorkspacesList extends React.Component {
     }
 
     async getStudents() {
+        console.log(this.props);
         const workspaceId = this.props.match.params.id;
         try {
             this.props.showProgress();
@@ -138,4 +141,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withLoading(withRouter(withStyles(styles)(WorkspacesList)));
+export default withTitle(withPageTitle(withLoading(withRouter(withStyles(styles)(WorkspacesList)))));

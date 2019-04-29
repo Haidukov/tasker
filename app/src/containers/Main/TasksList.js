@@ -12,6 +12,8 @@ import withUser from '../../hocs/withUser';
 import { getTasks } from '../../services/tasks.service';
 import DownloadButton from '../../components/DownloadButton';
 import withLoading from '../../hocs/withLoading';
+import withTitle from '../../hocs/withTitle';
+import withPageTitle from '../../hocs/withPageTitle';
 
 const styles = theme => ({
     layout: {
@@ -117,4 +119,4 @@ class TasksList extends React.Component {
     }
 }
 
-export default withLoading(withUser(withRouter(withStyles(styles)(TasksList))));
+export default withTitle(withPageTitle(withLoading(withUser(withRouter(withStyles(styles)(TasksList))))));

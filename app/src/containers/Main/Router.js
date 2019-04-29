@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import WorkspacesList from './WorkspacesList';
 import WorkspaceForm from './WorkspaceForm';
 import Workspace from './WorkspacePage';
@@ -9,59 +9,69 @@ import StudentsList from './StudentsList';
 import TasksList from './TasksList';
 import TaskForm from './TaskForm';
 import TaskBoard from './TaskBoard';
+import PropsRoute from '../../hocs/PropsRoute';
 
-const workspaceRouter = ({ match }) => (
+const MainRouter = ({ match }) => (
     <BrowserRouter>
         <Switch>
-            <Route
+            <PropsRoute
                 path={`${match.path}/add`}
                 component={WorkspaceForm}
                 match={match}
+                routeTitle='Add workspace'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/add`}
                 component={SprintForm}
                 match={match}
+                routeTitle='Add sprint'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/sprints/:sprintId/add`}
                 component={TaskForm}
                 match={match}
+                routeTitle='Add task'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/sprints/:sprintId`}
                 component={TasksList}
                 match={match}
+                routeTitle='Tasks'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/sprints`}
                 component={SprintsList}
                 match={match}
+                routeTitle='Sprints'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/students/:studentId`}
                 component={TaskBoard}
                 match={match}
+                routeTitle='Kanban Board'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id/students`}
                 component={StudentsList}
                 match={match}
+                routeTitle='Students'
             />
-            <Route
+            <PropsRoute
                 path={`${match.path}/:id`}
                 component={Workspace}
                 match={match}
+                routeTitle='Workspace'
             />
-            <Route
+            <PropsRoute
                 exact
                 path={match.path}
                 component={WorkspacesList}
                 match={match}
+                routeTitle='Workspaces'
             />
         </Switch>
     </BrowserRouter>
 );
 
-export default workspaceRouter;
+export default MainRouter;
 

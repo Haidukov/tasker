@@ -7,35 +7,15 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Router from './Router';
 import Footer from '../../components/Footer';
+import Heading from '../../components/Heading';
 
-const styles = theme => ({
-    appBar: {
-        position: 'relative',
-    },
-    icon: {
-        marginRight: theme.spacing.unit * 2,
-    }
-});
-
-const Layout = ({ classes, match }) => {
-    return (
+const Layout = ({ match }) => (
         <>
             <CssBaseline/>
-            <AppBar position="static" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Dashboard
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <Heading/>
             <Router match={match}/>
             <Footer/>
         </>
-    );
-}
+);
 
-Layout.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Layout);
+export default Layout;

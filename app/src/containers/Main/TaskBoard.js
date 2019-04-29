@@ -6,10 +6,17 @@ import * as Statuses from '../../constants/task-statuses';
 import TasksColumn from './TasksColumn';
 import withLoading from '../../hocs/withLoading';
 import withNotifications from '../../hocs/withNotifications';
+import withPageTitle from '../../hocs/withPageTitle';
+import withTitle from '../../hocs/withTitle';
+import CircularProgress from '@material-ui/core/es/CircularProgress/CircularProgress';
+import classNames from 'classnames';
 
 const styles = theme => ({
     container: {
         padding: theme.spacing.unit * 6
+    },
+    loadingContainer: {
+        padding: theme.spacing.unit * 24
     }
 });
 
@@ -51,43 +58,51 @@ class TaskBoard extends React.PureComponent {
 
             changedTask.status !== previousStatus &&
             this.props.showSuccessNotification('You have moved a task');
-        }
-        catch (e) {
+        } catch (e) {
             await this.getTasks();
             this.props.showErrorNotification('Failed to move a task');
-        }
-         finally {
+        } finally {
             this.props.hideProgress();
         }
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, isLoading } = this.props;
         const { tasks } = this.state;
         return (
-            <main className={classes.container}>
-                <Grid container spacing={24}>
-                    {Object.values(Statuses)
-                        .map((status, index) =>
-                            <Grid
-                                item
-                                xs={12}
-                                sm={6}
-                                key={index}
-                                md={12 / Object.values(Statuses).length}
-                            >
-                                <TasksColumn
-                                    tasks={tasks}
-                                    status={status}
-                                    onDrop={this.onDrop}
-                                />
-                            </Grid>
-                        )
-                    }
-                </Grid>
+            <main className={classNames({
+                [classes.container]: true,
+                [classes.loadingContainer]: isLoading
+            })}>
+                {!isLoading
+                    ?
+                    <Grid container spacing={24}>
+                        {Object.values(Statuses)
+                            .map((status, index) =>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    key={index}
+                                    md={12 / Object.values(Statuses).length}
+                                >
+                                    <TasksColumn
+                                        tasks={tasks}
+                                        status={status}
+                                        onDrop={this.onDrop}
+                                    />
+                                </Grid>
+                            )
+                        }
+                    </Grid>
+                    :
+                    <Grid container justify='center'>
+                        <CircularProgress/>
+                    </Grid>
+                }
             </main>
         )
     }
 }
 
-export default withNotifications(withLoading(withStyles(styles)(TaskBoard)));
+export default withTitle(withPageTitle(withNotifications(withLoading(withStyles(styles)(TaskBoard)))));

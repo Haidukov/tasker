@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { getWorkspace } from '../../services/workspace.service';
 import { withRouter, Link } from 'react-router-dom';
 import withLoading from '../../hocs/withLoading';
+import withPageTitle from '../../hocs/withPageTitle';
+import withTitle from '../../hocs/withTitle';
 
 const styles = theme => ({
     card: {
@@ -84,4 +86,4 @@ class WorkspacePage extends React.Component {
     }
 }
 
-export default withLoading(withRouter(withStyles(styles)(WorkspacePage)));
+export default withTitle(withPageTitle(withLoading(withRouter(withStyles(styles)(WorkspacePage)))));

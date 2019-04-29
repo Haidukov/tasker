@@ -6,28 +6,36 @@ import UserContext from './contexts/UserContext';
 import { getUserFromLocalStorage } from './services/local-storage.service';
 import NotificationsProvider from './components/Notifications/NotificationsProvider';
 import ProgressProvider from './components/Progress/ProgressProvider';
+import TitleContext from './contexts/TitleContext';
 
 class App extends Component {
 
     state = {
         user: getUserFromLocalStorage(),
+        title: ''
     };
 
     setUser = user => {
         this.setState({ user });
     };
 
+    setHeadingTitle = title => {
+        this.setState({ title })
+    };
+
     render() {
-        const userContextValue = {
-            user: this.state.user,
-            setUser: this.setUser
-        };
+        const { user, title } = this.state;
+        const { setUser, setHeadingTitle } = this;
+        const userContext = { user, setUser };
+        const titleContext = { title, setHeadingTitle };
         return (
             <DragDropContextProvider backend={HTML5Backend}>
-                <UserContext.Provider value={userContextValue}>
+                <UserContext.Provider value={userContext}>
                     <NotificationsProvider>
                         <ProgressProvider>
-                            <Router/>
+                            <TitleContext.Provider value={titleContext}>
+                                <Router/>
+                            </TitleContext.Provider>
                         </ProgressProvider>
                     </NotificationsProvider>
                 </UserContext.Provider>

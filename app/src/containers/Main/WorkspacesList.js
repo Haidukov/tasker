@@ -12,6 +12,8 @@ import MaterialPlusImage from '../../assets/img/material-icon-plus.png';
 import withUser from '../../hocs/withUser';
 import * as Roles from '../../constants/user-role';
 import withLoading from '../../hocs/withLoading';
+import withPageTitle from '../../hocs/withPageTitle';
+import withTitle from '../../hocs/withTitle';
 
 const styles = theme => ({
     layout: {
@@ -78,11 +80,9 @@ class WorkspacesList extends React.Component {
 
     goToWorkspace = workspaceId => {
         const { user: { role, id } } = this.props.user;
-        if (role === Roles.TEACHER) {
-            this.props.history.push(`/dashboard/${workspaceId}`);
-        } else {
+        role === Roles.TEACHER ?
+            this.props.history.push(`/dashboard/${workspaceId}`) :
             this.props.history.push(`/dashboard/${workspaceId}/students/${id}`);
-        }
     };
 
     render() {
@@ -138,4 +138,4 @@ class WorkspacesList extends React.Component {
     }
 }
 
-export default withLoading(withUser(withRouter(withStyles(styles)(WorkspacesList))));
+export default withTitle(withPageTitle(withLoading(withUser(withRouter(withStyles(styles)(WorkspacesList))))));
